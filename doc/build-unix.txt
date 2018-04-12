@@ -26,14 +26,6 @@ To Build
 Clone Latest Repo
 git clone https://github.com/DAPSCoin/PeepCoin-TheCoinForThePeople.git
 
-
-LevelDB
-cd ~/PeepCoin-TheCoinForThePeople/src/leveldb/
-chmod +x build_detect_platform
-make clean
-make libleveldb.a libmemenv.a
-cd ..
-
 Headless peepcoin
 make -f makefile.unix
 
@@ -75,13 +67,6 @@ Licenses of statically linked libraries:
  Boost         MIT-like license
  miniupnpc     New (3-clause) BSD license
 
-Versions used in this release:
- GCC           4.9.0
- OpenSSL       1.0.1g
- Berkeley DB   5.3.28.NC
- Boost         1.55.0
- miniupnpc     1.9.20140401
- 
 
 Detailed Dependency Build Instructions: Ubuntu & Debian
 -------------------------------------------------------
