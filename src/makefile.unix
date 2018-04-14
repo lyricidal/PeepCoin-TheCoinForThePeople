@@ -188,6 +188,12 @@ obj/zerocoin/%.o: zerocoin/%.cpp
 peepcoind: $(OBJS:obj/%=obj/%)
 	$(LINK) $(xCXXFLAGS) -o $@ $^ $(xLDFLAGS) $(LIBS)
 
+peepcoin-qt:
+	@echo "Building Peepcoinqt.pro..."; cd ..; qmake -makefile Peepcoin-qt.pro; chmod +x src/leveldb/build_detect_platform; make;
+
+strip:
+	@echo "Stripping (shrinking) files..."; strip peepcoind; cd ..; strip peepcoin-qt;
+
 clean:
 	-rm -f peepcoind
 	-rm -f obj/*.o
