@@ -52,9 +52,9 @@ UI_DIR = build
 # use: qmake "RELEASE=1"
 contains(RELEASE, 1) {
     # Mac: compile for maximum compatibility (10.5, 32-bit)
-    macx:QMAKE_CXXFLAGS += -mmacosx-version-min=10.6 -arch i386 -isysroot /Developer/SDKs/MacOSX10.6.sdk
-    macx:QMAKE_CFLAGS += -mmacosx-version-min=10.6 -arch i386 -isysroot /Developer/SDKs/MacOSX10.6.sdk
-    macx:QMAKE_OBJECTIVE_CFLAGS += -mmacosx-version-min=10.6 -arch i386 -isysroot /Developer/SDKs/MacOSX10.6.sdk
+    macx:QMAKE_CXXFLAGS += -mmacosx-version-min=10.10 -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk
+    macx:QMAKE_CFLAGS += -mmacosx-version-min=10.10 -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk
+    macx:QMAKE_OBJECTIVE_CFLAGS += -mmacosx-version-min=10.10 -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk
 
     !windows:!macx {
         # Linux: static link
@@ -420,11 +420,27 @@ isEmpty(OPENSSL_LIB_PATH) {
 }
 
 isEmpty(MINIUPNPC_INCLUDE_PATH) {
-    macx:MINIUPNPC_INCLUDE_PATH = /usr/local/opt/miniupnpc/include
+    macx:MINIUPNPC_INCLUDE_PATH = /usr/local/include/miniupnpc
 }
 
 isEmpty(MINIUPNPC_LIB_PATH) {
-    macx:MINIUPNPC_LIB_PATH = /usr/local/opt/miniupnpc/lib
+    macx:MINIUPNPC_LIB_PATH = /usr/local/lib
+}
+
+isEmpty(QRENCODE_INCLUDE_PATH) {
+    macx:QRENCODE_INCLUDE_PATH = /usr/local/include
+}
+
+isEmpty(QRENCODE_LIB_PATH) {
+    macx:QRENCODE_LIB_PATH = /usr/local/lib
+}
+
+isEmpty(LIBPNG_INCLUDE_PATH) {
+    macx:LIBPNG_INCLUDE_PATH = /usr/local/include/libpng16
+}
+
+isEmpty(LIBPNG_LIB_PATH) {
+    macx:LIBPNG_LIB_PATH = /usr/local/lib
 }
 
 windows:DEFINES += WIN32
