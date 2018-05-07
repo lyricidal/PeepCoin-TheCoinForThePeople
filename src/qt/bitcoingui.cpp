@@ -338,7 +338,13 @@ void BitcoinGUI::createToolBars()
 {
     QToolBar *toolbar = addToolBar(tr("Tabs toolbar"));
     toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-    toolbar->setStyleSheet(" QToolTip { color: black }; font: bold; color: white; background-color: #47146C");
+#ifdef Q_OS_LINUX
+    //Linux - Set Purple tabs, white text, tooltips unaffected
+    toolbar->setStyleSheet("background-color: #47146C; color: white");
+#else
+    //Windows/Mac - Set Purple tabs, white text, tooltips adjusted
+    toolbar->setStyleSheet(" QToolTip { color: black; background-color: #F9F8C4}; color: white; background-color: #47146C");
+#endif
     toolbar->addAction(overviewAction);
     toolbar->addAction(sendCoinsAction);
     toolbar->addAction(receiveCoinsAction);
@@ -347,7 +353,13 @@ void BitcoinGUI::createToolBars()
 
     QToolBar *toolbar2 = addToolBar(tr("Actions toolbar"));
     toolbar2->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-	toolbar2->setStyleSheet("background-color: #47146C");
+#ifdef Q_OS_LINUX
+    //Linux - Set Purple tabs, white text, tooltips unaffected
+    toolbar2->setStyleSheet("background-color: #47146C");
+#else
+    //Windows/Mac - Set Purple tabs, tooltips adjusted
+    toolbar2->setStyleSheet(" QToolTip { color: black; background-color: #F9F8C4}; background-color: #47146C");
+#endif
     toolbar2->addAction(exportAction);
 }
 
