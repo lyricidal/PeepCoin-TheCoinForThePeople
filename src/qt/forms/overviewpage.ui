@@ -5720,6 +5720,12 @@
             </disabled>
            </palette>
           </property>
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
           <property name="styleSheet">
            <string notr="true">QListView { background: transparent; }</string>
           </property>
