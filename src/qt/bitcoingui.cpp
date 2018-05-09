@@ -28,6 +28,7 @@
 #include "wallet.h"
 #ifdef USE_GUITESTING
 #include "mintingview.h"
+#include "blockbrowser.h"
 #endif
 #ifdef Q_OS_MAC
 #include "macdockiconhandler.h"
@@ -134,6 +135,9 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     vboxMinting->addWidget(mintingView);
     mintingPage->setLayout(vboxMinting);
     centralWidget->addWidget(mintingPage);
+
+    blockExplorer = new BlockBrowser(this);
+    centralWidget->addWidget(blockExplorer);
 #endif
     // Create status bar
     statusBar();
@@ -251,7 +255,7 @@ void BitcoinGUI::createActions()
     tabGroup->addAction(addressBookAction);
 
 #ifdef USE_GUITESTING
-    qDebug() << "Adding Staking view widget";
+    // Minting View
     mintingViewAction = new QAction(QIcon(":/icons/stake"), tr("&Stake View"), this);
     mintingViewAction->setToolTip(tr("Shows staking details"));
     mintingViewAction->setCheckable(true);
@@ -261,7 +265,18 @@ void BitcoinGUI::createActions()
     connect(mintingViewAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
     connect(mintingViewAction, SIGNAL(triggered()), this, SLOT(gotoMintingPage()));
 
+    // Blockexplorer View
+
+    blockexplorerAction = new QAction(QIcon(":/icons/block"), tr("&Block Explorer"), this);
+    blockexplorerAction->setToolTip(tr("Gives Information about blocks and transactions"));
+    blockexplorerAction->setCheckable(true);
+    blockexplorerAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_7));
+    tabGroup->addAction(blockexplorerAction);
+
+    connect(blockexplorerAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
+    connect(blockexplorerAction, SIGNAL(triggered()), this, SLOT(gotoBlockexplorerPage()));
 #endif
+
     connect(overviewAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
     connect(overviewAction, SIGNAL(triggered()), this, SLOT(gotoOverviewPage()));
     connect(sendCoinsAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
@@ -364,8 +379,10 @@ void BitcoinGUI::createToolBars()
     toolbar->addAction(receiveCoinsAction);
     toolbar->addAction(historyAction);
     toolbar->addAction(addressBookAction);
+#ifdef USE_GUITESTING
     toolbar->addAction(mintingViewAction);
-
+    toolbar->addAction(blockexplorerAction);
+#endif
     QToolBar *toolbar2 = addToolBar(tr("Actions toolbar"));
     toolbar2->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 	toolbar2->setStyleSheet("background-color: #47146C");
@@ -779,6 +796,17 @@ void BitcoinGUI::gotoMintingPage()
     exportAction->setEnabled(false);
     disconnect(exportAction, SIGNAL(triggered()), 0, 0);
 }
+
+void BitcoinGUI::gotoBlockexplorerPage()
+{
+   blockexplorerAction->setChecked(true);
+   centralWidget->setCurrentWidget(blockExplorer);
+
+   exportAction->setEnabled(false);
+   disconnect(exportAction, SIGNAL(triggered()), 0, 0);
+
+}
+
 #endif
 
 void BitcoinGUI::gotoSignMessageTab(QString addr)

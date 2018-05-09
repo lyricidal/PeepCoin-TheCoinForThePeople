@@ -283,7 +283,8 @@ HEADERS += src/qt/bitcoingui.h \
     src/qt/mintingview.h \
     src/qt/mintingtablemodel.h \
     src/kernelrecord.h \
-    src/qt/mintingfilterproxy.h
+    src/qt/mintingfilterproxy.h\
+    src/qt/blockbrowser.h
 
 SOURCES += src/qt/bitcoin.cpp src/qt/bitcoingui.cpp \
     src/qt/transactiontablemodel.cpp \
@@ -362,7 +363,8 @@ SOURCES += src/qt/bitcoin.cpp src/qt/bitcoingui.cpp \
     src/zerocoin/Params.cpp \
     src/zerocoin/SerialNumberSignatureOfKnowledge.cpp \
     src/zerocoin/SpendMetaData.cpp \
-    src/zerocoin/ZeroTest.cpp
+    src/zerocoin/ZeroTest.cpp \
+    src/qt/blockbrowser.cpp
 
 RESOURCES += \
     src/qt/bitcoin.qrc
@@ -379,7 +381,8 @@ FORMS += \
     src/qt/forms/sendcoinsentry.ui \
     src/qt/forms/askpassphrasedialog.ui \
     src/qt/forms/rpcconsole.ui \
-    src/qt/forms/optionsdialog.ui
+    src/qt/forms/optionsdialog.ui \
+    src/qt/forms/blockbrowser.ui
 
 contains(USE_QRCODE, 1) {
 HEADERS += src/qt/qrcodedialog.h

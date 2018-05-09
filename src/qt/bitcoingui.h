@@ -17,6 +17,8 @@ class SignVerifyMessageDialog;
 class Notificator;
 class RPCConsole;
 class MintingView;
+class BlockBrowser;
+
 QT_BEGIN_NAMESPACE
 class QLabel;
 class QLineEdit;
@@ -68,8 +70,16 @@ private:
     SendCoinsDialog *sendCoinsPage;
     SignVerifyMessageDialog *signVerifyMessageDialog;
 #ifdef USE_GUITESTING
+    // Minting View
+    QAction *mintingViewAction;
     QWidget *mintingPage;
     MintingView *mintingView;
+
+    // Blockexplorer View
+    QAction *blockexplorerAction;
+    BlockBrowser *blockExplorer;
+
+
 #endif
     QLabel *labelEncryptionIcon;
     QLabel *labelStakingIcon;
@@ -108,9 +118,7 @@ private:
 
     uint64_t nWeight;
 
-#ifdef USE_GUITESTING
-    QAction *mintingViewAction;
-#endif
+
     /** Create the main UI actions. */
     void createActions();
     /** Create the menu bar and sub-menus. */
@@ -162,6 +170,8 @@ private slots:
     void gotoVerifyMessageTab(QString addr = "");
 #ifdef USE_GUITESTING
     void gotoMintingPage();
+
+    void gotoBlockexplorerPage();
 #endif
     /** Show configuration dialog */
     void optionsClicked();
