@@ -8,6 +8,8 @@
 
 #include "main.h"
 #include "wallet.h"
+extern std::map<unsigned int, unsigned int> mapHashedBlocks;
+
 
 /* Generate a new block, without valid proof-of-work */
 CBlock* CreateNewBlock(CWallet* pwallet, bool fProofOfStake=false, int64_t* pFees = 0);

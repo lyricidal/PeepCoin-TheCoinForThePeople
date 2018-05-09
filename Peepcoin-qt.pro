@@ -26,8 +26,8 @@ BOOST_INCLUDE_PATH=C:/deps/boost_1_64_0
 BOOST_LIB_PATH=C:/deps/boost_1_64_0/stage/lib
 BDB_INCLUDE_PATH=C:/deps/db-4.8.30.NC/build_unix
 BDB_LIB_PATH=C:/deps/db-4.8.30.NC/build_unix
-OPENSSL_INCLUDE_PATH=C:/deps/openssl-1.0.2n/include
-OPENSSL_LIB_PATH=C:/deps/openssl-1.0.2n
+OPENSSL_INCLUDE_PATH=C:/deps/openssl-1.0.2g/include
+OPENSSL_LIB_PATH=C:/deps/openssl-1.0.2g
 MINIUPNPC_INCLUDE_PATH=C:/deps/
 MINIUPNPC_LIB_PATH=C:/deps/miniupnpc
 LIBPNG_INCLUDE_PATH=C:/deps/libpng-1.6.16
@@ -76,6 +76,25 @@ win32:QMAKE_LFLAGS *= -Wl,--large-address-aware -static
 win32:QMAKE_LFLAGS += -static-libgcc -static-libstdc++
 lessThan(QT_MAJOR_VERSION, 5): win32: QMAKE_LFLAGS *= -static
 
+# use: qmake "USE_LITESTAKE=1"
+# This feature implements a delay between hashing so the CPU usage is reduced.
+# Checkout HyperStake - Project for more details
+contains(USE_LITESTAKE,1){
+    message(Building with Litestake feature)
+    DEFINES += USE_LITESTAKE
+}else{
+    message(Building without Litestake feature)
+}
+contains(USE_GUITESTING,1){
+    message(Building beta GUI elements)
+    DEFINES += USE_GUITESTING
+}
+contains(USE_STAKECOMBINATION,1){
+    message(Building with Stakecombination feature)
+    DEFINES += USE_STAKECOMBINATION
+}else{
+    message(Building without Stakecombination feautre)
+}
 # use: qmake "USE_QRCODE=1"
 # libqrencode (http://fukuchi.org/works/qrencode/index.en.html) must be installed for support
 contains(USE_QRCODE, 1) {
@@ -118,7 +137,11 @@ contains(BITCOIN_NEED_QT_PLUGINS, 1) {
 
 INCLUDEPATH += src/leveldb/include src/leveldb/helpers
 LIBS += $$PWD/src/leveldb/libleveldb.a $$PWD/src/leveldb/libmemenv.a
-SOURCES += src/txdb-leveldb.cpp
+SOURCES += src/txdb-leveldb.cpp \
+    src/qt/mintingview.cpp \
+    src/qt/mintingtablemodel.cpp \
+    src/kernelrecord.cpp \
+    src/qt/mintingfilterproxy.cpp
 !win32 {
     # we use QMAKE_CXXFLAGS_RELEASE even without RELEASE=1 because we use RELEASE to indicate linking preferences not -O preferences
     genleveldb.commands = cd $$PWD/src/leveldb && CC=$$QMAKE_CC CXX=$$QMAKE_CXX $(MAKE) OPT=\"$$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE\" libleveldb.a libmemenv.a
@@ -256,7 +279,11 @@ HEADERS += src/qt/bitcoingui.h \
     src/version.h \
     src/netbase.h \
     src/clientversion.h \
-    src/threadsafety.h
+    src/threadsafety.h \
+    src/qt/mintingview.h \
+    src/qt/mintingtablemodel.h \
+    src/kernelrecord.h \
+    src/qt/mintingfilterproxy.h
 
 SOURCES += src/qt/bitcoin.cpp src/qt/bitcoingui.cpp \
     src/qt/transactiontablemodel.cpp \

@@ -17,6 +17,7 @@ class COutput;
 class COutPoint;
 class uint256;
 class CCoinControl;
+class MintingTableModel;
 
 QT_BEGIN_NAMESPACE
 class QTimer;
@@ -69,6 +70,11 @@ public:
     qint64 getImmatureBalance() const;
     int getNumTransactions() const;
     EncryptionStatus getEncryptionStatus() const;
+
+#ifdef USE_GUITESTING
+    MintingTableModel *mintingTableModel;
+    MintingTableModel *getMintingTableModel();
+#endif
 
     // Check address for validity
     bool validateAddress(const QString &address);

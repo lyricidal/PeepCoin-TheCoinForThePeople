@@ -52,6 +52,10 @@ inline bool MoneyRange(int64_t nValue) { return (nValue >= 0 && nValue <= MAX_MO
 /** Threshold for nLockTime: below this value it is interpreted as block number, otherwise as UNIX timestamp. */
 static const unsigned int LOCKTIME_THRESHOLD = 500000000; // Tue Nov  5 00:53:20 1985 UTC
 
+
+
+
+
 static const int64_t COIN_YEAR_REWARD = 100 * CENT;
 
 static const uint256 hashGenesisBlock("0x000007d4a3378b9ec2eb544355591aa7ccd5a0a7a38159399b852bbd59940d50");
@@ -86,6 +90,7 @@ extern CCriticalSection cs_setpwalletRegistered;
 extern std::set<CWallet*> setpwalletRegistered;
 extern unsigned char pchMessageStart[4];
 extern std::map<uint256, CBlock*> mapOrphanBlocks;
+
 
 // Settings
 extern int64_t nTransactionFee;

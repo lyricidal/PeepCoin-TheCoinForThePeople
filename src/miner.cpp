@@ -16,7 +16,7 @@ using namespace std;
 //
 
 extern unsigned int nMinerSleep;
-
+map<unsigned int, unsigned int> mapHashedBlocks;
 int static FormatHashBlocks(void* pbuffer, unsigned int len)
 {
     unsigned char* pdata = (unsigned char*)pbuffer;
@@ -559,6 +559,16 @@ void StakeMiner(CWallet *pwallet)
                 continue;
             }
         }
+#ifdef USE_LITESTAKE
+        if(mapHashedBlocks.count(nBestHeight)) //search our map of hashed blocks, see if bestblock has been hashed yet
+        {
+            if(GetTime() - mapHashedBlocks[nBestHeight] <  (unsigned int)pwallet->nHashInterval) // wait a 'hash interval' until trying to hash again
+            {
+                Sleep(1000); // 1 second sleep for this thread
+                continue;
+            }
+        }
+#endif
 
         //
         // Create new block

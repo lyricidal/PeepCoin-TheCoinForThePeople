@@ -10,7 +10,6 @@
 #include "strlcpy.h"
 #include "addrman.h"
 #include "ui_interface.h"
-
 #ifdef WIN32
 #include <string.h>
 #endif
@@ -1545,10 +1544,8 @@ void ThreadOpenAddedConnections(void* parg)
 void ThreadOpenAddedConnections2(void* parg)
 {
     printf("ThreadOpenAddedConnections started\n");
-
     if (mapArgs.count("-addnode") == 0)
         return;
-
     if (HaveNameProxy()) {
         while(!fShutdown) {
             BOOST_FOREACH(string& strAddNode, mapMultiArgs["-addnode"]) {

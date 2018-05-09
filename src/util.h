@@ -139,11 +139,24 @@ inline void MilliSleep(int64_t n)
 #endif
 
 
+#ifdef USE_STAKECOMBINATION
+// Variables for stake combination feature based on Trezarcoin-Project
+static const int64_t MIN_STAKE_AMOUNT = 200 * COIN;
 
+// implemented in wallet.cpp
+extern int64_t nStakeMinValue;
+extern int64_t nCombineThreshold;
+extern int64_t nSplitThreshold;
 
+extern uint32_t nStakeMinTime;
+extern uint32_t nStakeMinDepth;
+#endif
 
-
-
+#ifdef USE_GUITESTING
+static const int32_t nOneHour = 60 * 60;
+static const int32_t nOneDay = 24 * 60 * 60;
+static const int64_t nOneWeek = 7 * 24 * 60 * 60;
+#endif
 
 extern std::map<std::string, std::string> mapArgs;
 extern std::map<std::string, std::vector<std::string> > mapMultiArgs;
@@ -161,6 +174,7 @@ extern bool fTestNet;
 extern bool fNoListen;
 extern bool fLogTimestamps;
 extern bool fReopenDebugLog;
+
 
 void RandAddSeed();
 void RandAddSeedPerfmon();
@@ -222,6 +236,7 @@ boost::filesystem::path GetPidFile();
 void CreatePidFile(const boost::filesystem::path &path, pid_t pid);
 #endif
 void ReadConfigFile(std::map<std::string, std::string>& mapSettingsRet, std::map<std::string, std::vector<std::string> >& mapMultiSettingsRet);
+void CreateConfigFile();
 #ifdef WIN32
 boost::filesystem::path GetSpecialFolderPath(int nFolder, bool fCreate = true);
 #endif

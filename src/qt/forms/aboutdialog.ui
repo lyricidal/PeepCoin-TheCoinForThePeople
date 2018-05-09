@@ -33,6 +33,19 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
+      <spacer name="verticalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
         <widget class="QLabel" name="label">
@@ -95,7 +108,7 @@ Copyright © 2018 The DAPScoin developers</string>
       <widget class="QLabel" name="label_2">
        <property name="font">
         <font>
-         <pointsize>8</pointsize>
+         <pointsize>7</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -107,7 +120,7 @@ Copyright © 2018 The DAPScoin developers</string>
         <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));</string>
        </property>
        <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is experimental software. Distributed under the MIT/X11 software license, see the accompanying file COPYING or &lt;a href=&quot;http://www.opensource.org/licenses/mit-license.php&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.opensource.org/licenses/mit-license.php&lt;/span&gt;&lt;/a&gt;.This product includes software developed by the OpenSSL Project for use in the &lt;a href=&quot;https://www.openssl.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;OpenSSL Toolkit&lt;/span&gt;&lt;/a&gt; and cryptographic software written by &lt;a href=&quot;mailto:eay@cryptsoft.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Eric Young&lt;/span&gt;&lt;/a&gt; and UPnP software written by Thomas Bernard.&lt;br/&gt;This Peepcoin wallet release was created by the DAPS Team. Peepcoin will be swapping to DAPS in the second half of 2018. To view information on DAPS and when Peepcoin will be available to swap, visit &lt;a href=&quot;https://dapscoin.com/roadmap/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;the DAPS Roadmap and FAQ&lt;/span&gt;&lt;/a&gt;. All DAPS Team products are produced and reviewed by fully ID'd and vetted developers.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;body&gt;This is experimental software. Distributed under the MIT/X11 software license, see the accompanying file COPYING or &lt;a href=&quot;http://www.opensource.org/licenses/mit-license.php&quot;&gt;http://www.opensource.org/licenses/mit-license.php&lt;/a&gt;.This product includes software developed by the OpenSSL Project for use in the &lt;a href=&quot;https://www.openssl.org/&quot;&gt;OpenSSL Toolkit/&lt;/a&gt; and cryptographic software written by &lt;a href=&quot;mailto:eay@cryptsoft.com&quot;&gt;Eric Young&lt;/a&gt; and UPnP software written by Thomas Bernard.&lt;br/&gt;This Peepcoin wallet release was created by the DAPS Team. Peepcoin will be swapping to DAPS in the second half of 2018. To view information on DAPS and when Peepcoin will be available to swap, visit &lt;a href=&quot;https://dapscoin.com/roadmap/&quot;&gt;the DAPS Roadmap and FAQ&lt;/a&gt;. All DAPS Team products are produced and reviewed by fully ID'd and vetted developers.&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="textFormat">
         <enum>Qt::RichText</enum>
@@ -122,6 +135,19 @@ Copyright © 2018 The DAPScoin developers</string>
         <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
        </property>
       </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
      </item>
      <item>
       <widget class="QDialogButtonBox" name="buttonBox">

@@ -45,6 +45,7 @@ unsigned int nStakeMinAge = 2 * 60 * 60;
 unsigned int nStakeMaxAge = -1; // unlimited
 unsigned int nModifierInterval = 10 * 60; // time to elapse before new modifier is computed
 
+
 int nCoinbaseMaturity = 2;
 CBlockIndex* pindexGenesisBlock = NULL;
 int nBestHeight = -1;
@@ -1563,9 +1564,14 @@ bool CBlock::ConnectBlock(CTxDB& txdb, CBlockIndex* pindex, bool fJustCheck)
             int64_t nTxValueOut = tx.GetValueOut();
             nValueIn += nTxValueIn;
             nValueOut += nTxValueOut;
+
             if (!tx.IsCoinStake())
                 nFees += nTxValueIn - nTxValueOut;
             if (tx.IsCoinStake())
+#ifdef USE_STAKECOMBINATION
+                if(nTxValueIn < MIN_STAKE_AMOUNT)
+                  return(DoS(100,error("ConnectBlock() : proof-of-stake input amount too low ")));
+#endif
                 nStakeReward = nTxValueOut - nTxValueIn;
 
             if (!tx.ConnectInputs(txdb, mapInputs, mapQueuedChanges, posThisTx, pindex, true, false))
@@ -2338,6 +2344,7 @@ bool ProcessBlock(CNode* pfrom, CBlock* pblock)
 // peepcoin: attempt to generate suitable proof-of-stake
 bool CBlock::SignBlock(CWallet& wallet, int64_t nFees)
 {
+
     // if we are trying to sign
     //    something except proof-of-stake block template
     if (!vtx[0].vout[0].IsEmpty())

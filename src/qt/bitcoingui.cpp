@@ -26,7 +26,9 @@
 #include "guiutil.h"
 #include "rpcconsole.h"
 #include "wallet.h"
-
+#ifdef USE_GUITESTING
+#include "mintingview.h"
+#endif
 #ifdef Q_OS_MAC
 #include "macdockiconhandler.h"
 #endif
@@ -56,9 +58,8 @@
 #include <QDragEnterEvent>
 #include <QUrl>
 #include <QStyle>
-
 #include <iostream>
-
+#include <QDebug>
 extern CWallet* pwalletMain;
 extern int64_t nLastCoinStakeSearchInterval;
 double GetPoSKernelPS();
@@ -89,7 +90,6 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
 #endif
     // Accept D&D of URIs
     setAcceptDrops(true);
-
     // Create actions for the toolbar, menu bar and tray/dock icon
     createActions();
 
@@ -127,6 +127,14 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     centralWidget->addWidget(sendCoinsPage);
     setCentralWidget(centralWidget);
 
+#ifdef USE_GUITESTING
+    mintingPage = new QWidget(this);
+    QVBoxLayout *vboxMinting = new QVBoxLayout();
+    mintingView = new MintingView(this);
+    vboxMinting->addWidget(mintingView);
+    mintingPage->setLayout(vboxMinting);
+    centralWidget->addWidget(mintingPage);
+#endif
     // Create status bar
     statusBar();
 
@@ -242,6 +250,18 @@ void BitcoinGUI::createActions()
     addressBookAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_5));
     tabGroup->addAction(addressBookAction);
 
+#ifdef USE_GUITESTING
+    qDebug() << "Adding Staking view widget";
+    mintingViewAction = new QAction(QIcon(":/icons/stake"), tr("&Stake View"), this);
+    mintingViewAction->setToolTip(tr("Shows staking details"));
+    mintingViewAction->setCheckable(true);
+    mintingViewAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_6));
+    tabGroup->addAction(mintingViewAction);
+
+    connect(mintingViewAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
+    connect(mintingViewAction, SIGNAL(triggered()), this, SLOT(gotoMintingPage()));
+
+#endif
     connect(overviewAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
     connect(overviewAction, SIGNAL(triggered()), this, SLOT(gotoOverviewPage()));
     connect(sendCoinsAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
@@ -338,28 +358,17 @@ void BitcoinGUI::createToolBars()
 {
     QToolBar *toolbar = addToolBar(tr("Tabs toolbar"));
     toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-#ifdef Q_OS_LINUX
-    //Linux - Set Purple tabs, white text, tooltips unaffected
-    toolbar->setStyleSheet("background-color: #47146C; color: white");
-#else
-    //Windows/Mac - Set Purple tabs, white text, tooltips adjusted
-    toolbar->setStyleSheet(" QToolTip { color: black; background-color: #F9F8C4}; color: white; background-color: #47146C");
-#endif
+    toolbar->setStyleSheet(" QToolTip { color: black }; font: bold; color: white; background-color: #47146C");
     toolbar->addAction(overviewAction);
     toolbar->addAction(sendCoinsAction);
     toolbar->addAction(receiveCoinsAction);
     toolbar->addAction(historyAction);
     toolbar->addAction(addressBookAction);
+    toolbar->addAction(mintingViewAction);
 
     QToolBar *toolbar2 = addToolBar(tr("Actions toolbar"));
     toolbar2->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-#ifdef Q_OS_LINUX
-    //Linux - Set Purple tabs, white text, tooltips unaffected
-    toolbar2->setStyleSheet("background-color: #47146C");
-#else
-    //Windows/Mac - Set Purple tabs, tooltips adjusted
-    toolbar2->setStyleSheet(" QToolTip { color: black; background-color: #F9F8C4}; background-color: #47146C");
-#endif
+	toolbar2->setStyleSheet("background-color: #47146C");
     toolbar2->addAction(exportAction);
 }
 
@@ -414,7 +423,9 @@ void BitcoinGUI::setWalletModel(WalletModel *walletModel)
 
         // Put transaction list in tabs
         transactionView->setModel(walletModel);
-
+#ifdef USE_GUITESTING
+        mintingView->setModel(walletModel);
+#endif
         overviewPage->setModel(walletModel);
         addressBookPage->setModel(walletModel->getAddressTableModel());
         receiveCoinsPage->setModel(walletModel->getAddressTableModel());
@@ -758,6 +769,17 @@ void BitcoinGUI::gotoSendCoinsPage()
     exportAction->setEnabled(false);
     disconnect(exportAction, SIGNAL(triggered()), 0, 0);
 }
+
+#ifdef USE_GUITESTING
+void BitcoinGUI::gotoMintingPage()
+{
+    mintingViewAction->setChecked(true);
+    centralWidget->setCurrentWidget(mintingPage);
+
+    exportAction->setEnabled(false);
+    disconnect(exportAction, SIGNAL(triggered()), 0, 0);
+}
+#endif
 
 void BitcoinGUI::gotoSignMessageTab(QString addr)
 {
