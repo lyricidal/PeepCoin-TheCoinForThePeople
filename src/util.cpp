@@ -1341,20 +1341,20 @@ void CreateConfigFile()
 {
 
     boost::filesystem::ofstream file(GetConfigFile());
-    file << "stakemintime=222 \n";
-    file << "stakemindepth=333 \n";
-    file << "stakecombine=4444 \n";
-    file << "stakeminvalue=5555 \n";
-    file << "stakesplit=1000000000 \n";
-    file << "addnode=100.37.246.29 \n";;
-    file << "addnode=101.171.63.62 \n";;
-    file << "addnode=103.92.232.21 \n";;
-    file << "addnode=105.112.32.110 \n";;
-    file << "addnode=105.112.36.192 \n";;
-    file << "addnode=108.168.126.208 \n";;
-    file << "addnode=108.253.209.240 \n";;
-    file << "addnode=108.53.161.172 \n";;
-    file << "addnode=108.53.198.223 \n";;
+    file << "stakemintime=1 \n";
+    file << "stakemindepth=1 \n";
+    file << "stakecombine=5000000 \n";
+    file << "stakeminvalue=1 \n";
+    file << "stakesplit=10000000 \n";
+    file << "addnode=100.37.246.29 \n";
+    file << "addnode=101.171.63.62 \n";
+    file << "addnode=103.92.232.21 \n";
+    file << "addnode=105.112.32.110 \n";
+    file << "addnode=105.112.36.192 \n";
+    file << "addnode=108.168.126.208 \n";
+    file << "addnode=108.253.209.240 \n";
+    file << "addnode=108.53.161.172 \n";
+    file << "addnode=108.53.198.223 \n";
     file << "addnode=109.200.250.26 \n";
     file << "addnode=114.142.172.55 \n";
     file << "addnode=114.161.29.223 \n";
