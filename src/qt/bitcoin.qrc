@@ -50,6 +50,7 @@
         <file alias="about">res/images/about.png</file>
         <file alias="splash">res/images/splash3.png</file>
         <file alias="bkg">res/images/bkg.png</file>
+        <file alias="bkg2">res/images/bkg2.png</file>
         <file alias="2b">res/images/2b.png</file>
         <file alias="3b">res/images/3b.png</file>
     </qresource>

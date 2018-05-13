@@ -31,6 +31,9 @@
   <property name="acceptDrops">
    <bool>false</bool>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-image: url(:/images/2b);</string>
+  </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>

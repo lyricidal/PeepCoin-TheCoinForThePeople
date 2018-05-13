@@ -564,7 +564,13 @@ void StakeMiner(CWallet *pwallet)
         {
             if(GetTime() - mapHashedBlocks[nBestHeight] <  (unsigned int)pwallet->nHashInterval) // wait a 'hash interval' until trying to hash again
             {
-                Sleep(1000); // 1 second sleep for this thread
+#ifdef WIN32
+    //Windows - Sleep capitalized
+    Sleep(1000); // 1 second sleep in upper case
+#else
+    //Linux/Mac - sleep in short case
+    sleep(1000); // 1 second sleep for this thread
+#endif
                 continue;
             }
         }
