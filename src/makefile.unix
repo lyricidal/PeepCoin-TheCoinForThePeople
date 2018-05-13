@@ -40,6 +40,13 @@ ifneq (${USE_UPNP}, -)
 	DEFS += -DUSE_UPNP=$(USE_UPNP)
 endif
 
+ifdef USE_LITESTAKE
+    DEFS += -USE_LITESTAKE
+endif
+ifdef USE_STAKECOMBINATION
+    DEFS += -USE_STAKECOMBINATION
+endif
+
 LIBS+= \
  -Wl,-B$(LMODE2) \
    -l z \

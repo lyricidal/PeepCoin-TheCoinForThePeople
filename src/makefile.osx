@@ -7,17 +7,18 @@
 # Originally by Laszlo Hanyecz (solar@heliacal.net)
 
 CXX=llvm-g++
-DEPSDIR=/opt/local
+DEPSDIR=/usr/local/opt
 
 INCLUDEPATHS= \
  -I"$(CURDIR)" \
  -I"$(CURDIR)"/obj \
  -I"$(DEPSDIR)/include" \
- -I"$(DEPSDIR)/include/db48"
+ -I"$(DEPSDIR)/berkeley-db@4/include" \
+ -I"$(DEPSDIR)/openssl/include"
 
 LIBPATHS= \
- -L"$(DEPSDIR)/lib" \
- -L"$(DEPSDIR)/lib/db48"
+ -L"$(DEPSDIR)/berkeley-db@4/lib" \
+ -L"$(DEPSDIR)/openssl/lib"
 
 USE_UPNP:=1
 
@@ -26,13 +27,13 @@ LIBS= -dead_strip
 ifdef STATIC
 # Build STATIC if you are redistributing the peepcoind binary
 LIBS += \
- $(DEPSDIR)/lib/db48/libdb_cxx-4.8.a \
- $(DEPSDIR)/lib/libboost_system-mt.a \
- $(DEPSDIR)/lib/libboost_filesystem-mt.a \
- $(DEPSDIR)/lib/libboost_program_options-mt.a \
- $(DEPSDIR)/lib/libboost_thread-mt.a \
- $(DEPSDIR)/lib/libssl.a \
- $(DEPSDIR)/lib/libcrypto.a \
+ $(DEPSDIR)/berkeley-db@4/lib/libdb_cxx-4.8.a \
+ $(DEPSDIR)/boost@1.60/lib/libboost_system-mt.a \
+ $(DEPSDIR)/boost@1.60/lib/libboost_filesystem-mt.a \
+ $(DEPSDIR)/boost@1.60/lib/libboost_program_options-mt.a \
+ $(DEPSDIR)/boost@1.60/lib/libboost_thread-mt.a \
+ $(DEPSDIR)/openssl/lib/libssl.a \
+ $(DEPSDIR)/openssl/lib/libcrypto.a \
  -lz
 else
 LIBS += \
@@ -55,6 +56,13 @@ ifdef RELEASE
 CFLAGS = -mmacosx-version-min=10.5 -arch x86_64 -O3 -msse2
 else
 CFLAGS = -g -msse2
+endif
+
+ifdef USE_LITESTAKE
+    DEFS += -USE_LITESTAKE
+endif
+ifdef USE_STAKECOMBINATION
+    DEFS += -USE_STAKECOMBINATION
 endif
 
 # ppc doesn't work because we don't support big-endian
@@ -112,7 +120,7 @@ endif
 ifneq (${USE_UPNP}, -)
 	DEFS += -DUSE_UPNP=$(USE_UPNP)
 ifdef STATIC
-	LIBS += $(DEPSDIR)/lib/libminiupnpc.a
+	LIBS += /usr/local/lib/libminiupnpc.a
 else
 	LIBS += -lminiupnpc
 endif

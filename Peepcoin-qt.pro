@@ -434,11 +434,11 @@ isEmpty(BDB_INCLUDE_PATH) {
 }
 
 isEmpty(BOOST_LIB_PATH) {
-    macx:BOOST_LIB_PATH = /usr/local/opt/boost@1.57/lib
+    macx:BOOST_LIB_PATH = /usr/local/opt/boost@1.60/lib
 }
 
 isEmpty(BOOST_INCLUDE_PATH) {
-    macx:BOOST_INCLUDE_PATH = /usr/local/opt/boost@1.57/include
+    macx:BOOST_INCLUDE_PATH = /usr/local/opt/boost@1.60/include
 }
 
 isEmpty(OPENSSL_INCLUDE_PATH) {
