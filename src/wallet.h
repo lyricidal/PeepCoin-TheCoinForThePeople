@@ -96,6 +96,13 @@ public:
     std::map<CKeyID, CKeyMetadata> mapKeyMetadata;
 
 
+#ifdef USE_LITESTAKE
+    // Stake Settings
+    unsigned int nHashInterval;
+    int nStakeSetUpdateTime;
+
+#endif
+
     typedef std::map<unsigned int, CMasterKey> MasterKeyMap;
     MasterKeyMap mapMasterKeys;
     unsigned int nMasterKeyMaxID;
@@ -120,9 +127,18 @@ public:
         pwalletdbEncryption = NULL;
         nOrderPosNext = 0;
         nTimeFirstKey = 0;
+
+#ifdef USE_LITESTAKE
+        // Stake Settings
+        nHashInterval = 22;
+        nStakeSetUpdateTime = 300; // 5 minutes
+#endif
     }
 
     std::map<uint256, CWalletTx> mapWallet;
+#ifdef USE_GUITESTING
+    std::vector<uint256> vMintingWalletUpdated;
+#endif
     int64_t nOrderPosNext;
     std::map<uint256, int> mapRequestCount;
 

@@ -16,7 +16,7 @@ using namespace std;
 //
 
 extern unsigned int nMinerSleep;
-
+map<unsigned int, unsigned int> mapHashedBlocks;
 int static FormatHashBlocks(void* pbuffer, unsigned int len)
 {
     unsigned char* pdata = (unsigned char*)pbuffer;
@@ -357,7 +357,7 @@ CBlock* CreateNewBlock(CWallet* pwallet, bool fProofOfStake, int64_t* pFees)
         nLastBlockSize = nBlockSize;
 
         if (fDebug && GetBoolArg("-printpriority"))
-            printf("CreateNewBlock(): total size %"PRIu64"\n", nBlockSize);
+            printf("CreateNewBlock(): total size %" PRIu64 "\n", nBlockSize);
 
         if (!fProofOfStake)
             pblock->vtx[0].vout[0].nValue = GetProofOfWorkReward(nFees);
@@ -559,6 +559,22 @@ void StakeMiner(CWallet *pwallet)
                 continue;
             }
         }
+#ifdef USE_LITESTAKE
+        if(mapHashedBlocks.count(nBestHeight)) //search our map of hashed blocks, see if bestblock has been hashed yet
+        {
+            if(GetTime() - mapHashedBlocks[nBestHeight] <  (unsigned int)pwallet->nHashInterval) // wait a 'hash interval' until trying to hash again
+            {
+#ifdef WIN32
+    //Windows - Sleep capitalized
+    Sleep(1000); // 1 second sleep in upper case
+#else
+    //Linux/Mac - sleep in short case
+    sleep(1000); // 1 second sleep for this thread
+#endif
+                continue;
+            }
+        }
+#endif
 
         //
         // Create new block

@@ -9,7 +9,6 @@
 #include "version.h"
 #include "ui_interface.h"
 #include <boost/algorithm/string/join.hpp>
-
 // Work around clang compilation problem in Boost 1.46:
 // /usr/include/boost/program_options/detail/config_file.hpp:163:17: error: call to function 'to_internal' that is neither visible in the template definition nor found by argument-dependent lookup
 // See also: http://stackoverflow.com/questions/10020179/compilation-fail-in-boost-librairies-program-options
@@ -29,7 +28,7 @@ namespace boost {
 #include <openssl/crypto.h>
 #include <openssl/rand.h>
 #include <stdarg.h>
-
+#include <QDebug>
 #ifdef WIN32
 #ifdef _MSC_VER
 #pragma warning(disable:4786)
@@ -366,7 +365,7 @@ string FormatMoney(int64_t n, bool fPlus)
     int64_t n_abs = (n > 0 ? n : -n);
     int64_t quotient = n_abs/COIN;
     int64_t remainder = n_abs%COIN;
-    string str = strprintf("%"PRId64".%08"PRId64, quotient, remainder);
+    string str = strprintf("%" PRId64 ".%08" PRId64, quotient, remainder);
 
     // Right-trim excess zeros before the decimal point:
     int nTrim = 0;
@@ -502,6 +501,7 @@ void ParseParameters(int argc, const char* const argv[])
 {
     mapArgs.clear();
     mapMultiArgs.clear();
+
     for (int i = 1; i < argc; i++)
     {
         char psz[10000];
@@ -1053,19 +1053,24 @@ boost::filesystem::path GetConfigFile()
     return pathConfigFile;
 }
 
+
+
 void ReadConfigFile(map<string, string>& mapSettingsRet,
                     map<string, vector<string> >& mapMultiSettingsRet)
 {
     boost::filesystem::ifstream streamConfig(GetConfigFile());
-    if (!streamConfig.good())
-        return; // No bitcoin.conf file is OK
+    // If no config file was found we create a new one, writing our default values in it and try to open it again
+    if (!streamConfig.good()){
+        CreateConfigFile();
+        streamConfig.open(GetConfigFile().c_str());
+    }
 
     set<string> setOptions;
     setOptions.insert("*");
 
     for (boost::program_options::detail::config_file_iterator it(streamConfig, setOptions), end; it != end; ++it)
     {
-        // Don't overwrite existing settings so command line settings override bitcoin.conf
+        // Don't overwrite existing settings so command line settings override peepcoin.conf
         string strKey = string("-") + it->string_key;
         if (mapSettingsRet.count(strKey) == 0)
         {
@@ -1183,7 +1188,7 @@ void AddTimeData(const CNetAddr& ip, int64_t nTime)
 
     // Add data
     vTimeOffsets.input(nOffsetSample);
-    printf("Added time data, samples %d, offset %+"PRId64" (%+"PRId64" minutes)\n", vTimeOffsets.size(), nOffsetSample, nOffsetSample/60);
+    printf("Added time data, samples %d, offset %+" PRId64 " (%+" PRId64 " minutes)\n", vTimeOffsets.size(), nOffsetSample, nOffsetSample/60);
     if (vTimeOffsets.size() >= 5 && vTimeOffsets.size() % 2 == 1)
     {
         int64_t nMedian = vTimeOffsets.median();
@@ -1218,10 +1223,10 @@ void AddTimeData(const CNetAddr& ip, int64_t nTime)
         }
         if (fDebug) {
             BOOST_FOREACH(int64_t n, vSorted)
-                printf("%+"PRId64"  ", n);
+                printf("%+" PRId64 "  ", n);
             printf("|  ");
         }
-        printf("nTimeOffset = %+"PRId64"  (%+"PRId64" minutes)\n", nTimeOffset, nTimeOffset/60);
+        printf("nTimeOffset = %+" PRId64 "  (%+" PRId64 " minutes)\n", nTimeOffset, nTimeOffset/60);
     }
 }
 
@@ -1326,4 +1331,260 @@ bool NewThread(void(*pfn)(void*), void* parg)
         return false;
     }
     return true;
+}
+/**
+ * @brief CreateConfigFile
+ * @author Beerjockel
+ * Creates a default configFile including pre-defined nodes and default staking parameters.
+ */
+void CreateConfigFile()
+{
+
+    boost::filesystem::ofstream file(GetConfigFile());
+    file << "stakemintime=1 \n";
+    file << "stakemindepth=1 \n";
+    file << "stakecombine=5000000 \n";
+    file << "stakeminvalue=1 \n";
+    file << "stakesplit=10000000 \n";
+    file << "addnode=100.37.246.29 \n";
+    file << "addnode=101.171.63.62 \n";
+    file << "addnode=103.92.232.21 \n";
+    file << "addnode=105.112.32.110 \n";
+    file << "addnode=105.112.36.192 \n";
+    file << "addnode=108.168.126.208 \n";
+    file << "addnode=108.253.209.240 \n";
+    file << "addnode=108.53.161.172 \n";
+    file << "addnode=108.53.198.223 \n";
+    file << "addnode=109.200.250.26 \n";
+    file << "addnode=114.142.172.55 \n";
+    file << "addnode=114.161.29.223 \n";
+    file << "addnode=114.164.6.216 \n";
+    file << "addnode=114.183.153.44 \n";
+    file << "addnode=115.72.238.47 \n";
+    file << "addnode=116.100.169.203 \n";
+    file << "addnode=116.197.135.242 \n";
+    file << "addnode=116.91.84.252 \n";
+    file << "addnode=117.103.216.242 \n";
+    file << "addnode=117.4.246.138 \n";
+    file << "addnode=118.71.100.98 \n";
+    file << "addnode=119.173.198.93 \n";
+    file << "addnode=124.86.24.70 \n";
+    file << "addnode=125.162.170.9 \n";
+    file << "addnode=126.228.40.231 \n";
+    file << "addnode=128.71.118.163 \n";
+    file << "addnode=129.56.12.113 \n";
+    file << "addnode=13.58.34.234 \n";
+    file << "addnode=135.19.104.145 \n";
+    file << "addnode=136.62.10.124 \n";
+    file << "addnode=138.0.182.251 \n";
+    file << "addnode=138.94.192.67 \n";
+    file << "addnode=14.202.18.115 \n";
+    file << "addnode=14.244.201.143 \n";
+    file << "addnode=142.214.241.38 \n";
+    file << "addnode=143.176.113.90 \n";
+    file << "addnode=144.76.237.39 \n";
+    file << "addnode=148.102.133.72 \n";
+    file << "addnode=148.102.149.252 \n";
+    file << "addnode=149.210.171.120 \n";
+    file << "addnode=151.237.232.133 \n";
+    file << "addnode=157.37.8.244 \n";
+    file << "addnode=160.179.184.68 \n";
+    file << "addnode=162.219.178.186 \n";
+    file << "addnode=165.255.123.13 \n";
+    file << "addnode=165.255.59.55 \n";
+    file << "addnode=165.255.72.252 \n";
+    file << "addnode=168.232.83.144 \n";
+    file << "addnode=168.232.83.179 \n";
+    file << "addnode=171.252.56.45 \n";
+    file << "addnode=172.103.193.185 \n";
+    file << "addnode=172.56.7.61 \n";
+    file << "addnode=173.34.77.164 \n";
+    file << "addnode=173.94.206.210 \n";
+    file << "addnode=177.139.194.98 \n";
+    file << "addnode=177.192.116.240 \n";
+    file << "addnode=177.204.111.94 \n";
+    file << "addnode=178.49.208.110 \n";
+    file << "addnode=179.105.110.211 \n";
+    file << "addnode=179.180.123.127 \n";
+    file << "addnode=179.189.53.116 \n";
+    file << "addnode=179.189.99.12 \n";
+    file << "addnode=179.209.107.80 \n";
+    file << "addnode=179.212.167.111 \n";
+    file << "addnode=179.232.15.217 \n";
+    file << "addnode=179.252.83.93 \n";
+    file << "addnode=179.253.141.68 \n";
+    file << "addnode=179.254.168.51 \n";
+    file << "addnode=179.255.247.14 \n";
+    file << "addnode=179.83.8.239 \n";
+    file << "addnode=184.5.161.220 \n";
+    file << "addnode=185.161.200.10 \n";
+    file << "addnode=185.59.38.216 \n";
+    file << "addnode=187.114.186.97 \n";
+    file << "addnode=187.123.7.166 \n";
+    file << "addnode=187.28.12.98 \n";
+    file << "addnode=187.54.114.27 \n";
+    file << "addnode=187.87.240.122 \n";
+    file << "addnode=188.214.30.201 \n";
+    file << "addnode=188.235.233.250 \n";
+    file << "addnode=188.238.193.167 \n";
+    file << "addnode=188.66.16.67 \n";
+    file << "addnode=188.75.128.51 \n";
+    file << "addnode=189.18.185.76 \n";
+    file << "addnode=190.172.25.30 \n";
+    file << "addnode=191.205.173.53 \n";
+    file << "addnode=191.217.127.231 \n";
+    file << "addnode=191.223.199.54 \n";
+    file << "addnode=191.249.192.22 \n";
+    file << "addnode=191.250.230.168 \n";
+    file << "addnode=191.33.74.202 \n";
+    file << "addnode=192.199.186.94 \n";
+    file << "addnode=193.213.144.126 \n";
+    file << "addnode=193.81.223.63 \n";
+    file << "addnode=199.36.221.145 \n";
+    file << "addnode=2.25.164.207 \n";
+    file << "addnode=200.101.53.52 \n";
+    file << "addnode=200.219.65.33 \n";
+    file << "addnode=201.131.68.155 \n";
+    file << "addnode=201.51.26.126 \n";
+    file << "addnode=202.222.51.230 \n";
+    file << "addnode=208.54.86.237 \n";
+    file << "addnode=212.127.210.120 \n";
+    file << "addnode=212.204.169.88 \n";
+    file << "addnode=213.176.236.55 \n";
+    file << "addnode=216.251.205.195 \n";
+    file << "addnode=219.102.124.156 \n";
+    file << "addnode=220.100.69.188 \n";
+    file << "addnode=220.237.132.58 \n";
+    file << "addnode=220.81.201.229 \n";
+    file << "addnode=24.159.113.249 \n";
+    file << "addnode=27.64.207.167 \n";
+    file << "addnode=31.201.36.112 \n";
+    file << "addnode=31.223.166.81 \n";
+    file << "addnode=34.210.12.89 \n";
+    file << "addnode=35.231.97.108 \n";
+    file << "addnode=36.70.198.146 \n";
+    file << "addnode=37.112.199.13 \n";
+    file << "addnode=37.187.96.15 \n";
+    file << "addnode=37.192.31.35 \n";
+    file << "addnode=37.210.193.157 \n";
+    file << "addnode=41.13.8.205 \n";
+    file << "addnode=41.162.90.67 \n";
+    file << "addnode=43.229.201.210 \n";
+    file << "addnode=46.98.203.56 \n";
+    file << "addnode=47.221.170.8 \n";
+    file << "addnode=49.150.36.49 \n";
+    file << "addnode=5.158.42.249 \n";
+    file << "addnode=5.170.68.20 \n";
+    file << "addnode=5.29.117.129 \n";
+    file << "addnode=5.77.252.85 \n";
+    file << "addnode=50.88.199.97 \n";
+    file << "addnode=52.232.176.106 \n";
+    file << "addnode=58.183.82.117 \n";
+    file << "addnode=58.191.127.174 \n";
+    file << "addnode=59.93.32.250 \n";
+    file << "addnode=62.102.130.101 \n";
+    file << "addnode=62.238.21.29 \n";
+    file << "addnode=64.228.200.159 \n";
+    file << "addnode=65.60.168.64 \n";
+    file << "addnode=66.133.74.104 \n";
+    file << "addnode=66.133.74.113 \n";
+    file << "addnode=66.73.15.173 \n";
+    file << "addnode=67.167.165.253 \n";
+    file << "addnode=67.173.149.116 \n";
+    file << "addnode=68.102.177.170 \n";
+    file << "addnode=68.105.177.20 \n";
+    file << "addnode=68.108.116.104 \n";
+    file << "addnode=68.205.89.125 \n";
+    file << "addnode=68.224.35.101 \n";
+    file << "addnode=68.32.125.151 \n";
+    file << "addnode=68.39.42.172 \n";
+    file << "addnode=68.98.84.244 \n";
+    file << "addnode=69.114.244.191 \n";
+    file << "addnode=70.170.103.208 \n";
+    file << "addnode=70.175.112.249 \n";
+    file << "addnode=70.49.54.92 \n";
+    file << "addnode=71.225.239.87 \n";
+    file << "addnode=71.35.31.40 \n";
+    file << "addnode=71.59.197.249 \n";
+    file << "addnode=72.133.198.45 \n";
+    file << "addnode=73.110.33.255 \n";
+    file << "addnode=73.110.34.133 \n";
+    file << "addnode=73.110.34.183 \n";
+    file << "addnode=73.110.38.111 \n";
+    file << "addnode=73.136.123.200 \n";
+    file << "addnode=73.140.62.110 \n";
+    file << "addnode=73.223.135.61 \n";
+    file << "addnode=73.96.112.154 \n";
+    file << "addnode=73.96.113.34 \n";
+    file << "addnode=73.96.114.186 \n";
+    file << "addnode=73.96.114.206 \n";
+    file << "addnode=74.118.44.21 \n";
+    file << "addnode=74.79.112.36 \n";
+    file << "addnode=74.89.89.41 \n";
+    file << "addnode=76.182.241.25 \n";
+    file << "addnode=77.123.250.6 \n";
+    file << "addnode=77.162.164.233 \n";
+    file << "addnode=77.171.177.110 \n";
+    file << "addnode=77.173.213.170 \n";
+    file << "addnode=77.179.91.61 \n";
+    file << "addnode=77.180.78.143 \n";
+    file << "addnode=77.72.149.117 \n";
+    file << "addnode=78.212.14.57 \n";
+    file << "addnode=79.112.152.93 \n";
+    file << "addnode=79.117.226.15 \n";
+    file << "addnode=79.145.214.248 \n";
+    file << "addnode=79.235.35.199 \n";
+    file << "addnode=80.121.135.109 \n";
+    file << "addnode=81.100.205.55 \n";
+    file << "addnode=81.171.81.174 \n";
+    file << "addnode=81.171.81.175 \n";
+    file << "addnode=81.171.81.176 \n";
+    file << "addnode=81.171.98.72 \n";
+    file << "addnode=82.19.214.143 \n";
+    file << "addnode=82.46.69.102 \n";
+    file << "addnode=82.73.154.227 \n";
+    file << "addnode=84.107.146.103 \n";
+    file << "addnode=84.181.15.102 \n";
+    file << "addnode=84.181.8.220 \n";
+    file << "addnode=84.213.115.171 \n";
+    file << "addnode=84.30.102.157 \n";
+    file << "addnode=84.57.35.152 \n";
+    file << "addnode=85.134.10.120 \n";
+    file << "addnode=85.150.31.201 \n";
+    file << "addnode=86.152.207.84 \n";
+    file << "addnode=86.91.45.179 \n";
+    file << "addnode=86.95.179.157 \n";
+    file << "addnode=87.214.246.245 \n";
+    file << "addnode=87.92.125.127 \n";
+    file << "addnode=88.116.117.226 \n";
+    file << "addnode=88.117.24.204 \n";
+    file << "addnode=89.229.80.234 \n";
+    file << "addnode=90.107.251.139 \n";
+    file << "addnode=90.145.207.66 \n";
+    file << "addnode=90.199.10.1 \n";
+    file << "addnode=91.215.125.10 \n";
+    file << "addnode=91.239.237.146 \n";
+    file << "addnode=92.40.249.77 \n";
+    file << "addnode=93.108.75.15 \n";
+    file << "addnode=93.146.44.130 \n";
+    file << "addnode=93.146.44.193 \n";
+    file << "addnode=93.190.141.209 \n";
+    file << "addnode=94.211.221.222 \n";
+    file << "addnode=94.215.193.215 \n";
+    file << "addnode=94.231.73.88 \n";
+    file << "addnode=94.50.234.249 \n";
+    file << "addnode=95.157.233.62 \n";
+    file << "addnode=96.23.58.11 \n";
+    file << "addnode=96.245.211.101 \n";
+    file << "addnode=96.27.191.46 \n";
+    file << "addnode=96.29.214.203 \n";
+    file << "addnode=97.122.239.227 \n";
+    file << "addnode=98.195.234.171 \n";
+    file << "addnode=98.20.140.18 \n";
+    file << "addnode=99.238.126.157 \n";
+    file << "addnode=99.245.248.11 \n";
+    file << "addnode=99.36.100.166 \n";
+    file << "addnode=99.99.42.198 \n";
+    file.close();
+
 }

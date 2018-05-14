@@ -18,7 +18,7 @@ static const int STATUSBAR_ICONSIZE = 16;
 /* Transaction list -- negative amount */
 #define COLOR_NEGATIVE QColor(255, 0, 0)
 /* Transaction list -- bare address (without label) */
-#define COLOR_BAREADDRESS QColor(140, 140, 140)
+#define COLOR_BAREADDRESS QColor("black")
 
 /* Tooltips longer than this (in characters) are converted into rich text,
    so that they can be word-wrapped.
@@ -30,5 +30,11 @@ static const int MAX_URI_LENGTH = 255;
 
 /* QRCodeDialog -- size of exported QR Code image */
 #define EXPORT_IMAGE_SIZE 256
+
+/* Colors for minting tab for each coin age group */
+#define COLOR_MINT_YOUNG QColor(0, 67, 99)
+#define COLOR_MINT_MATURE QColor(29, 99, 0)
+#define COLOR_MINT_OLD QColor(99, 0, 23)
+
 
 #endif // GUICONSTANTS_H

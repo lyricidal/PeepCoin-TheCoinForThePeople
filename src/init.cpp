@@ -17,7 +17,7 @@
 #include <boost/interprocess/sync/file_lock.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 #include <openssl/crypto.h>
-
+#include <QDebug>
 #ifndef WIN32
 #include <signal.h>
 #endif
@@ -385,6 +385,19 @@ bool AppInit2()
     fUseFastIndex = GetBoolArg("-fastindex", true);
     nMinerSleep = GetArg("-minersleep", 500);
 
+#ifdef USE_STAKECOMBINATION
+    if(fTestNet) {
+        nStakeMinTime = (uint)GetArg("-stakemintime", 2);
+        nStakeMinDepth = (uint)GetArg("-stakemindepth", 0);
+    } else {
+        nStakeMinTime = (uint)GetArg("-stakemintime", 2);
+        nStakeMinDepth = (uint)GetArg("-stakemindepth", 0);
+    }
+    /* Reset time if depth is specified */
+    if(nStakeMinDepth) nStakeMinTime = 0;
+    qDebug() <<"nStakeMinDepth: " << nStakeMinDepth;
+    qDebug() <<"nStakeMinTime: " << nStakeMinTime;
+#endif
     CheckpointsMode = Checkpoints::STRICT;
     std::string strCpMode = GetArg("-cppolicy", "strict");
 
@@ -490,6 +503,35 @@ bool AppInit2()
             return InitError(strprintf(_("Invalid amount for -mininput=<amount>: '%s'"), mapArgs["-mininput"].c_str()));
     }
 
+#ifdef USE_STAKECOMBINATION
+    /* Inputs below this limit in value don't participate in staking */
+    if(mapArgs.count("-stakeminvalue")) {
+        nStakeMinValue = atoi(mapArgs["-stakeminvalue"]);
+        if(nStakeMinValue < 0 )
+          return(InitError("Invalid amount for -stakeminvalue=<amount>'"));
+        qDebug() << "nStakeMinValue: " << nStakeMinValue;
+    }
+
+    /* Try to combine inputs while staking up to this limit */
+    if(mapArgs.count("-stakecombine")) {
+        nCombineThreshold = atoi(mapArgs["-stakecombine"]);
+        if(nCombineThreshold < 0 )
+          return(InitError("Invalid amount for -stakecombine=<amount>'"));
+         qDebug() << "nCombineThreshold:" << nCombineThreshold;
+        if(nCombineThreshold < MIN_STAKE_AMOUNT)
+          nCombineThreshold = MIN_STAKE_AMOUNT;
+    }
+
+    /* Don't split outputs while staking below this limit */
+    if(mapArgs.count("-stakesplit")) {
+        nSplitThreshold = atoi(mapArgs["-stakesplit"]);
+        if(nSplitThreshold < 0 )
+          return(InitError("Invalid amount for -stakesplit=<amount>'"));
+        qDebug() << "nSplitThreshold:" << nSplitThreshold;
+        if(nSplitThreshold < 2 * MIN_STAKE_AMOUNT)
+          nSplitThreshold = 2 * MIN_STAKE_AMOUNT;
+    }
+#endif
     // ********************************************************* Step 4: application initialization: dir lock, daemonize, pidfile, debug log
     // Sanity check
     if (!InitSanityCheck())
@@ -726,7 +768,7 @@ bool AppInit2()
         printf("Shutdown requested. Exiting.\n");
         return false;
     }
-    printf(" block index %15"PRId64"ms\n", GetTimeMillis() - nStart);
+    printf(" block index %15" PRId64 "ms\n", GetTimeMillis() - nStart);
 
     if (GetBoolArg("-printblockindex") || GetBoolArg("-printblocktree"))
     {
@@ -827,7 +869,7 @@ bool AppInit2()
     }
 
     printf("%s", strErrors.str().c_str());
-    printf(" wallet      %15"PRId64"ms\n", GetTimeMillis() - nStart);
+    printf(" wallet      %15" PRId64 "ms\n", GetTimeMillis() - nStart);
 
     RegisterWallet(pwalletMain);
 
@@ -847,7 +889,7 @@ bool AppInit2()
         printf("Rescanning last %i blocks (from block %i)...\n", pindexBest->nHeight - pindexRescan->nHeight, pindexRescan->nHeight);
         nStart = GetTimeMillis();
         pwalletMain->ScanForWalletTransactions(pindexRescan, true);
-        printf(" rescan      %15"PRId64"ms\n", GetTimeMillis() - nStart);
+        printf(" rescan      %15" PRId64 "ms\n", GetTimeMillis() - nStart);
     }
 
     // ********************************************************* Step 9: import blocks
@@ -889,7 +931,7 @@ bool AppInit2()
             printf("Invalid or missing peers.dat; recreating\n");
     }
 
-    printf("Loaded %i addresses from peers.dat  %"PRId64"ms\n",
+    printf("Loaded %i addresses from peers.dat  %" PRId64 "ms\n",
            addrman.size(), GetTimeMillis() - nStart);
 
     // ********************************************************* Step 11: start node
@@ -900,11 +942,11 @@ bool AppInit2()
     RandAddSeedPerfmon();
 
     //// debug print
-    printf("mapBlockIndex.size() = %"PRIszu"\n",   mapBlockIndex.size());
+    printf("mapBlockIndex.size() = %" PRIszu "\n",   mapBlockIndex.size());
     printf("nBestHeight = %d\n",            nBestHeight);
-    printf("setKeyPool.size() = %"PRIszu"\n",      pwalletMain->setKeyPool.size());
-    printf("mapWallet.size() = %"PRIszu"\n",       pwalletMain->mapWallet.size());
-    printf("mapAddressBook.size() = %"PRIszu"\n",  pwalletMain->mapAddressBook.size());
+    printf("setKeyPool.size() = %" PRIszu "\n",      pwalletMain->setKeyPool.size());
+    printf("mapWallet.size() = %" PRIszu "\n",       pwalletMain->mapWallet.size());
+    printf("mapAddressBook.size() = %" PRIszu "\n",  pwalletMain->mapAddressBook.size());
 
     if (!NewThread(StartNode, NULL))
         InitError(_("Error: could not start node"));

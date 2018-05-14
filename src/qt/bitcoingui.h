@@ -16,6 +16,8 @@ class SendCoinsDialog;
 class SignVerifyMessageDialog;
 class Notificator;
 class RPCConsole;
+class MintingView;
+class BlockBrowser;
 
 QT_BEGIN_NAMESPACE
 class QLabel;
@@ -67,7 +69,18 @@ private:
     AddressBookPage *receiveCoinsPage;
     SendCoinsDialog *sendCoinsPage;
     SignVerifyMessageDialog *signVerifyMessageDialog;
+#ifdef USE_GUITESTING
+    // Minting View
+    QAction *mintingViewAction;
+    QWidget *mintingPage;
+    MintingView *mintingView;
 
+    // Blockexplorer View
+    QAction *blockexplorerAction;
+    BlockBrowser *blockExplorer;
+
+
+#endif
     QLabel *labelEncryptionIcon;
     QLabel *labelStakingIcon;
     QLabel *labelConnectionsIcon;
@@ -104,6 +117,7 @@ private:
     QMovie *syncIconMovie;
 
     uint64_t nWeight;
+
 
     /** Create the main UI actions. */
     void createActions();
@@ -154,7 +168,11 @@ private slots:
     void gotoSignMessageTab(QString addr = "");
     /** Show Sign/Verify Message dialog and switch to verify message tab */
     void gotoVerifyMessageTab(QString addr = "");
+#ifdef USE_GUITESTING
+    void gotoMintingPage();
 
+    void gotoBlockexplorerPage();
+#endif
     /** Show configuration dialog */
     void optionsClicked();
     /** Show about dialog */
