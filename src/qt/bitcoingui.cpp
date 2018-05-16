@@ -79,12 +79,14 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     rpcConsole(0),
     nWeight(0)
 {
-    setFixedSize(1000, 542);
+	setFixedSize(1000, 542);
+	setMaximumSize(QWIDGETSIZE_MAX,QWIDGETSIZE_MAX);
+	setMinimumSize(0,0);
     setWindowTitle(tr("Peepcoin") + " - " + tr("Wallet"));
 #ifdef Q_OS_LINUX
 	qApp->setStyleSheet("QMainWindow { background-image:url(:images/bkg2);border:none;font-family:'Open Sans,sans-serif'; }");
 #else
-	qApp->setStyleSheet("QMainWindow { background-image:url(:images/bkg);border:none;font-family:'Open Sans,sans-serif'; }");
+	qApp->setStyleSheet("QMainWindow { border-image:url(:images/bkg);border:none;font-family:'Open Sans,sans-serif'; }");
 #endif
 #ifndef Q_OS_MAC
     qApp->setWindowIcon(QIcon(":icons/bitcoin"));
