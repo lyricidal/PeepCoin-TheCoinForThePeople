@@ -12,7 +12,273 @@ graphical user interface.
 
 WINDOWS BUILD NOTES
 ===================
+# PeepCoin-TheCoinForThePeople
 
+## Windows compilation guide
+
+System requirements:
+
+7z for windows  : http://www.7-zip.org/
+
+Building System:
+Virtual Box + Win10 Eval Edition
+
+(make sure no PATH variables are set besides the default one from windows)
+
+
+
+## 1. MSYS + MINGW
+
+### MYSYS
+Get msys shell from the following link:
+
+http://sourceforge.net/projects/mingw/files/Installer/mingw-get-setup.exe/download
+
+Only install the following packages (MinGW Installation Manager -> All Packages -> MYSYS)
+```
+msys-base-bin
+
+msys-autoconf-bin
+
+msys-automake-bin
+
+msys-libtool-bin
+```
+Apply changes, do NOT install any mingw packages and no mysys-gcc abd msys-w32-api packages.
+
+### MinGW 4.9.2
+
+http://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/4.9.2/threads-posix/dwarf/i686-4.9.2-release-posix-dwarf-rt_v3-rev1.7z/download
+
+Add the mingw32\bin folder to your system variables under PATH.
+
+Check under command console 
+```
+gcc-v gives out:
+```
+```
+$ gcc -v
+Using built-in specs.
+
+COLLECT_GCC= c:\mingw32\bin\gcc.exe OR gcc
+
+COLLECT_LTO_WRAPPER=c:/mingw32/bin/../libexec/gcc/i686-w64-mingw32/4.9.2/lto-wrapper.exe
+
+Target: i686-w64-mingw32
+.
+.
+.
+Thread model: posix
+
+gcc version 4.9.2 (i686-posix-dwarf-rev1, Built by MinGW-W64 project)
+```
+
+## 2. Build dependecies
+
+
+I used a folder for all dependencies C:\deps
+
+### OpenSSL 1.0.1J:
+
+ https://www.openssl.org/source/old/1.0.2/openssl-1.0.2n.tar.gz
+
+ 
+Use MinGW Shell ( C:\mingw\msys\1.0\msys.bat)
+
+```
+cd /c/deps/
+
+tar xvfz openssl-1.0.2n.tar.gz
+
+cd openssl-1.0.2n
+
+Configure no-shared no-dso mingw
+
+make
+```
+
+### Berkeley DB
+
+ http://download.oracle.com/berkeley-db/db-4.8.30.NC.tar.gz
+
+Use MinGW Shell
+```
+cd /c/deps/
+
+tar xvfz db-4.8.30.NC.tar.gz
+
+cd db-4.8.30.NC/build_unix
+
+../dist/configure --enable-mingw --enable-cxx --disable-shared --disable-replication
+
+make
+```
+
+### Boost
+
+http://sourceforge.net/projects/boost/files/boost/1.64.0/
+
+Use Windows Command Console
+```
+cd C:\deps\boost_1_64_0\
+
+bootstrap.bat gcc
+
+b2 --build-type=complete --with-chrono --with-filesystem --with-program_options --with-system --with-thread toolset=gcc variant=release link=static threading=multi runtime-link=static stage
+```
+
+### Miniupnpc
+
+ http://miniupnp.free.fr/files/download.php?file=miniupnpc-1.9.20150206.tar.gz
+ 
+ Unpack it, change the name to "miniupnpc" and use the Windows Command Console:
+ ```
+ cd C:\deps\miniupnpc
+ 
+ mingw32-make -f Makefile.mingw init upnpc-static
+ ```
+ 
+ ### Qrencode:
+
+ http://download.sourceforge.net/libpng/libpng-1.6.16.tar.gz
+ 
+ ```
+ cd /c/deps/libpng-1.6.16
+ 
+configure --disable-shared
+
+make
+
+cp .libs/libpng16.a .libs/libpng.a
+ ```
+ http://fukuchi.org/works/qrencode/qrencode-3.4.4.tar.gz
+ ```
+ cd /c/deps/qrencode-3.4.4
+
+LIBS="../libpng-1.6.16/.libs/libpng.a ../../mingw32/i686-w64-mingw32/lib/libz.a" \
+png_CFLAGS="-I../libpng-1.6.16" \
+png_LIBS="-L../libpng-1.6.16/.libs" \
+configure --enable-static --disable-shared --without-tools
+
+make
+ 
+ ```
+ ### LevelDB
+ 
+ Compile LevelDB  in src folder using MSYS shell:
+ ```
+ TARGET_OS=NATIVE_WINDOWS make libleveldb.a libmemenv.a
+ ```
+ 
+ ## 3. QT
+ 
+  Depending which version you want to use you have to add the path to PATH before compiling the wallet
+   
+ ## Qt 5.6.1 (Required for 4k fixes)
+ 
+ Get the following submodule for Qt 5.6.1 from https://download.qt.io/archive/qt/5.6/5.6.1/submodules/:
+ ```
+ https://download.qt.io/archive/qt/5.6/5.6.1/submodules/qttools-opensource-src-5.6.1.zip
+ 
+ https://download.qt.io/archive/qt/5.6/5.6.1/submodules/qtbase-opensource-src-5.6.1.zip
+ ```
+ 
+ Place both in C:\Qt and rename qtbase... to 5.6.1
+ 
+ Use the Windows command prompt:
+ 
+ ```
+set INCLUDE=C:\deps\libpng-1.6.16;C:\deps\openssl-1.0.2n\include
+
+set LIB=C:\deps\libpng-1.6.16\.libs;C:\deps\openssl-1.0.2n
+
+cd C:\Qt\5.6.1
+
+configure.bat -release -opensource -confirm-license -static -make libs -no-sql-sqlite -no-opengl -system-zlib -qt-pcre -no-icu -no-gif -system-libpng -no-libjpeg -no-freetype -no-angle -no-openvg -openssl  -no audio-backend -nomake tools -nomake examples -nomake tests -I c:\deps\openssl-1.0.2n\include -no-directwrite
+
+(Configure could maybe use tweaking but got it to build. Please note the make *install* below as it's required as a workaround)
+
+mingw32-make install
+```
+
+Now watch out which Qt version you want to use, this example uses Qt 5.6.1
+```
+set PATH=%PATH%;C:\Qt\5.6.1\bin
+
+cd C:\Qt\qttools-opensource-src-5.6.1
+
+qmake qttools.pro
+
+mingw32-make
+
+
+```
+ 
+ ## Qt 5.3.2
+ 
+ Get the following submodule for Qt 5.3.2 from https://download.qt.io/archive/qt/5.3/5.3.2/submodules/:
+ ```
+ https://download.qt.io/archive/qt/5.3/5.3.2/submodules/qttools-opensource-src-5.3.2.zip
+ 
+ https://download.qt.io/archive/qt/5.3/5.3.2/submodules/qtbase-opensource-src-5.3.2.zip
+ ```
+ 
+ Place both in C:\Qt and rename qtbase... to 5.3.2
+ 
+ Use the Windows command promt:
+ 
+ ```
+set INCLUDE=C:\deps\libpng-1.6.16;C:\deps\openssl-1.0.2n\include
+
+set LIB=C:\deps\libpng-1.6.16\.libs;C:\deps\openssl-1.0.2n
+
+cd C:\Qt\5.3.2
+
+configure.bat -release -opensource -confirm-license -static -make libs -no-sql-sqlite -no-opengl -system-zlib -qt-pcre -no-icu -no-gif -system-libpng -no-libjpeg -no-freetype -no-angle -no-vcproj -openssl -no-dbus -no-audio-backend -no-wmf-backend -no-qml-debug
+
+mingw32-make
+```
+
+Now watch out which Qt version you want to use, this example uses Qt 5.3.2
+```
+set PATH=%PATH%;C:\Qt\5.3.2\bin
+
+cd C:\Qt\qttools-opensource-src-5.3.2
+
+qmake qttools.pro
+
+mingw32-make
+```
+
+
+### 4. Compile
+
+Go to the Peepcoin github folder, use the command promt ( use set PATH=%PATH%;C:\Qt\5.3.2\bin if its a new prompt):
+```
+
+qmake "USE_UPNP=-" Peepcoin-qt.pro
+
+make -f Makefile.Release
+```
+
+### ERRORS:
+ 
+If you get an ./build\net.o:net.cpp:(.text+0x76bc): undefined reference to `_imp__FreeUPNPUrls'  error:
+delete the build-folder, delete release folder, open Makefile.Release with text-editior/notepad++/whatever
+and add under DEFINES   
+```
+-DMINIUPNP_STATICLIB
+```
+
+Then again make qmake and make
+
+
+### Current state
+
+Wallet can be compiled without UPNP-Support, otherwise an error is thrown. 
+
+
+OLD BUILD NOTES BELOW
 Compilers Supported
 -------------------
 TODO: What works?
