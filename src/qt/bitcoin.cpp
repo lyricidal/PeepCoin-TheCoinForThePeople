@@ -123,6 +123,12 @@ int main(int argc, char *argv[])
 #endif
 
     Q_INIT_RESOURCE(bitcoin);
+#ifdef Q_OS_LINUX
+	//Need to use QT v5.6.1+, we currently build with 5.5.1
+#else
+	// turn on the DPI support**
+    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+#endif
     QApplication app(argc, argv);
 
     // Install global event filter that makes sure that long tooltips can be word-wrapped
