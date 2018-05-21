@@ -15,7 +15,7 @@ Dependencies
 sudo apt-get update
 sudo apt-get upgrade -y
 
-sudo apt-get install build-essential libssl-dev libdb++-dev -y
+sudo apt-get install build-essential libssl-dev libdb4.8++ -y
 sudo apt-get install libboost-all-dev libqrencode-dev libminiupnpc-dev -y
 sudo apt-get install qt5-default qt5-qmake qtbase5-dev-tools qttools5-dev-tools -y
 sudo add-apt-repository ppa:bitcoin/bitcoin
@@ -35,31 +35,25 @@ cd PeepCoin-TheCoinForThePeople/src
 To make both Headless Peepcoin (peepcoind) and the Peepcoin Wallet (peepcoin-qt), as well as shrink down your file size (strip), you can enter:
 make -f makefile.unix peepcoind peepcoin-qt strip
 
-Or to make them seperately:
+Or to make them seperately [recommended until next update]:
 
 Headless peepcoin (peepcoind)
-make -f makefile.unix
+make -f makefile.unix RELEASE=1 USE_LITESTAKE=1 USE_STAKECOMBINATION=1 USE_GUITESTING=1
+(There will be a few files that error about QDebug, edits to be made. For now, remove the Include QDebug line from those files to build peepcoind)
 strip peepcoind
 
 Qt GUI Wallet (peepcoin-qt)
-make -f makefile.unix peepcoin-qt strip
+make -f makefile.unix peepcoin-qt strip [requires updating]
 
 OR
 
 cd ..
-qmake -makefile Peepcoin-qt.pro
+qmake RELEASE=1 USE_QRCODE=1 USE_LITESTAKE=1 USE_STAKECOMBINATION=1 USE_GUITESTING=1
 make
+(if issues with USE_QRCODE=1, remove it, it will just build without QR Code support. Build/install from source instructions will be uploaded shortly)
 strip peepcoin-qt
 
 This will leave you with peepcoind (the daemon) in your /PeepCoin-TheCoinForThePeople/src/ folder and peepcoin-qt (the QT wallet) in your /PeepCoin-TheCoinForThePeople/ folder
-
-Configure peepcoin.conf to add nodes using nano text editor:
-nano ~/.peepcoin/peepcoin.conf
-
-Get node list from:
-https://chainz.cryptoid.info/pcn/#!network
-
-Paste the addnode list from there into your ~/.peepcoin/peepcoin.conf. Ctrl + X to save. Y and then Enter to save file.
 
 Launch your peepcoin-qt through the GUI or in terminal:
 cd ~/PeepCoin-TheCoinForThePeople/
