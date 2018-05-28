@@ -56,7 +56,6 @@ cd PeepCoin-TheCoinForThePeople/src
 (change in to the Peepcoin Source folder)
 
 make -f makefile.unix RELEASE=1 USE_LITESTAKE=1 USE_STAKECOMBINATION=1 USE_GUITESTING=1
-(There will be a few files that error about QDebug, edits to be made. For now, remove the "Include QDebug" line from those files to build peepcoind)
 strip peepcoind
 
 Build Qt GUI Wallet (peepcoin-qt)
