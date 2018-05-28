@@ -28,7 +28,9 @@ namespace boost {
 #include <openssl/crypto.h>
 #include <openssl/rand.h>
 #include <stdarg.h>
+#ifdef QT_GUI
 #include <QDebug>
+#endif
 #ifdef WIN32
 #ifdef _MSC_VER
 #pragma warning(disable:4786)

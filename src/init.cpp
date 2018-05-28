@@ -17,7 +17,9 @@
 #include <boost/interprocess/sync/file_lock.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 #include <openssl/crypto.h>
+#ifdef QT_GUI
 #include <QDebug>
+#endif
 #ifndef WIN32
 #include <signal.h>
 #endif
