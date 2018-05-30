@@ -47,18 +47,18 @@ To Build
 --------
 From a fresh terminal:
 
-Clone Latest Repo
+- Clone Latest Repo
 git clone https://github.com/DAPSCoin/PeepCoin-TheCoinForThePeople.git
 (This should download the latest official repo to a PeepCoin-TheCoinForThePeople folder)
 
-Build Headless peepcoin (peepcoind):
+- Build Headless peepcoin (peepcoind):
 cd PeepCoin-TheCoinForThePeople/src
 (change in to the Peepcoin Source folder)
 
-make -f makefile.unix RELEASE=1 USE_LITESTAKE=1 USE_STAKECOMBINATION=1 USE_GUITESTING=1
+make -f makefile.unix RELEASE=1 STATIC=1
 strip peepcoind
 
-Build Qt GUI Wallet (peepcoin-qt)
+- Build Qt GUI Wallet (peepcoin-qt)
 cd ..
 (if using the same terminal, brings you back to Peepcoin root folder)
 qmake RELEASE=1 USE_QRCODE=1 USE_LITESTAKE=1 USE_STAKECOMBINATION=1 USE_GUITESTING=1

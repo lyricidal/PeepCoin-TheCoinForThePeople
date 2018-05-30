@@ -10,6 +10,28 @@ software written by Thomas Bernard.
 See readme-qt.rst for instructions on building Peepcoin QT, the
 graphical user interface.
 
+Dependencies
+------------
+Libraries you need to download separately and build:
+
+                default path               download
+OpenSSL         C:\deps\openssl-1.0.2n        http://www.openssl.org/source/
+Berkeley DB     C:\deps\db-4.8.30.NC          http://www.oracle.com/technology/software/products/berkeley-db/index.html
+Boost           C:\deps\boost-1.64.0          http://www.boost.org/users/download/
+miniupnpc       C:\deps\miniupnpc        http://miniupnp.tuxfamily.org/files/
+
+Their licenses:
+OpenSSL        Old BSD license with the problematic advertising requirement
+Berkeley DB    New BSD license with additional requirement that linked software must be free open source
+Boost          MIT-like license
+miniupnpc      New (3-clause) BSD license
+
+Versions used in this release:
+OpenSSL      1.0.2n
+Berkeley DB  4.8.30.NC
+Boost        1.64.0
+miniupnpc    1.6
+
 WINDOWS BUILD NOTES
 ===================
 # PeepCoin-TheCoinForThePeople
@@ -24,7 +46,6 @@ Building System:
 Virtual Box + Win10 Eval Edition
 
 (make sure no PATH variables are set besides the default one from windows)
-
 
 
 ## 1. MSYS + MINGW
@@ -78,7 +99,7 @@ gcc version 4.9.2 (i686-posix-dwarf-rev1, Built by MinGW-W64 project)
 
 I used a folder for all dependencies C:\deps
 
-### OpenSSL 1.0.1J:
+### OpenSSL 1.0.2n:
 
  https://www.openssl.org/source/old/1.0.2/openssl-1.0.2n.tar.gz
 
@@ -174,16 +195,16 @@ make
  
   Depending which version you want to use you have to add the path to PATH before compiling the wallet
    
- ## Qt 5.6.1 (Required for 4k fixes)
+ ## Qt 5.7.1 (v5.6.1+ Required for 4k fixes)
  
- Get the following submodule for Qt 5.6.1 from https://download.qt.io/archive/qt/5.6/5.6.1/submodules/:
+ Get the following submodule for Qt 5.7.1 from https://download.qt.io/archive/qt/5.7/5.7.1/submodules/:
  ```
- https://download.qt.io/archive/qt/5.6/5.6.1/submodules/qttools-opensource-src-5.6.1.zip
+ https://download.qt.io/archive/qt/5.7/5.7.1/submodules/qttools-opensource-src-5.7.1.zip
  
- https://download.qt.io/archive/qt/5.6/5.6.1/submodules/qtbase-opensource-src-5.6.1.zip
+ https://download.qt.io/archive/qt/5.7/5.7.1/submodules/qtbase-opensource-src-5.7.1.zip
  ```
  
- Place both in C:\Qt and rename qtbase... to 5.6.1
+ Place both in C:\Qt and rename qtbase... to 5.7.1
  
  Use the Windows command prompt:
  
@@ -192,20 +213,20 @@ set INCLUDE=C:\deps\libpng-1.6.16;C:\deps\openssl-1.0.2n\include
 
 set LIB=C:\deps\libpng-1.6.16\.libs;C:\deps\openssl-1.0.2n
 
-cd C:\Qt\5.6.1
+cd C:\Qt\5.7.1
 
-configure.bat -release -opensource -confirm-license -static -make libs -no-sql-sqlite -no-opengl -system-zlib -qt-pcre -no-icu -no-gif -system-libpng -no-libjpeg -no-freetype -no-angle -no-openvg -openssl  -no audio-backend -nomake tools -nomake examples -nomake tests -I c:\deps\openssl-1.0.2n\include -no-directwrite
+configure.bat -release -opensource -confirm-license -static -make libs -no-sql-sqlite -no-opengl -system-zlib -no-icu -no-gif -no-libjpeg -no-freetype -no-angle -no-openvg -no-audio-backend -nomake tools -nomake examples -nomake tests -no-directwrite -openssl-linked -I c:\deps\openssl-1.0.2n\include -L c:\deps\openssl-1.0.2n OPENSSL_LIBS="-lssl -lcrypto -lgdi32"
 
 (Configure could maybe use tweaking but got it to build. Please note the make *install* below as it's required as a workaround)
 
-mingw32-make install
+mingw32-make
 ```
 
-Now watch out which Qt version you want to use, this example uses Qt 5.6.1
+Now watch out which Qt version you want to use, this example uses Qt 5.7.1
 ```
-set PATH=%PATH%;C:\Qt\5.6.1\bin
+set PATH=%PATH%;C:\Qt\5.7.1\bin
 
-cd C:\Qt\qttools-opensource-src-5.6.1
+cd C:\Qt\qttools-opensource-src-5.7.1
 
 qmake qttools.pro
 
@@ -214,137 +235,12 @@ mingw32-make
 
 ```
  
- ## Qt 5.3.2
- 
- Get the following submodule for Qt 5.3.2 from https://download.qt.io/archive/qt/5.3/5.3.2/submodules/:
- ```
- https://download.qt.io/archive/qt/5.3/5.3.2/submodules/qttools-opensource-src-5.3.2.zip
- 
- https://download.qt.io/archive/qt/5.3/5.3.2/submodules/qtbase-opensource-src-5.3.2.zip
- ```
- 
- Place both in C:\Qt and rename qtbase... to 5.3.2
- 
- Use the Windows command promt:
- 
- ```
-set INCLUDE=C:\deps\libpng-1.6.16;C:\deps\openssl-1.0.2n\include
-
-set LIB=C:\deps\libpng-1.6.16\.libs;C:\deps\openssl-1.0.2n
-
-cd C:\Qt\5.3.2
-
-configure.bat -release -opensource -confirm-license -static -make libs -no-sql-sqlite -no-opengl -system-zlib -qt-pcre -no-icu -no-gif -system-libpng -no-libjpeg -no-freetype -no-angle -no-vcproj -openssl -no-dbus -no-audio-backend -no-wmf-backend -no-qml-debug
-
-mingw32-make
-```
-
-Now watch out which Qt version you want to use, this example uses Qt 5.3.2
-```
-set PATH=%PATH%;C:\Qt\5.3.2\bin
-
-cd C:\Qt\qttools-opensource-src-5.3.2
-
-qmake qttools.pro
-
-mingw32-make
-```
-
-
 ### 4. Compile
 
 Go to the Peepcoin github folder, use the command promt ( use set PATH=%PATH%;C:\Qt\5.3.2\bin if its a new prompt):
 ```
 
-qmake "USE_UPNP=-" Peepcoin-qt.pro
+qmake USE_QRCODE=1
 
 make -f Makefile.Release
 ```
-
-### ERRORS:
- 
-If you get an ./build\net.o:net.cpp:(.text+0x76bc): undefined reference to `_imp__FreeUPNPUrls'  error:
-delete the build-folder, delete release folder, open Makefile.Release with text-editior/notepad++/whatever
-and add under DEFINES   
-```
--DMINIUPNP_STATICLIB
-```
-
-Then again make qmake and make
-
-
-### Current state
-
-Wallet can be compiled without UPNP-Support, otherwise an error is thrown. 
-
-
-OLD BUILD NOTES BELOW
-Compilers Supported
--------------------
-TODO: What works?
-Note: releases are cross-compiled using mingw running on Linux.
-
-
-Dependencies
-------------
-Libraries you need to download separately and build:
-
-                default path               download
-OpenSSL         \openssl-1.0.1b-mgw        http://www.openssl.org/source/
-Berkeley DB     \db-4.8.30.NC-mgw          http://www.oracle.com/technology/software/products/berkeley-db/index.html
-Boost           \boost-1.47.0-mgw          http://www.boost.org/users/download/
-miniupnpc       \miniupnpc-1.6-mgw         http://miniupnp.tuxfamily.org/files/
-
-Their licenses:
-OpenSSL        Old BSD license with the problematic advertising requirement
-Berkeley DB    New BSD license with additional requirement that linked software must be free open source
-Boost          MIT-like license
-miniupnpc      New (3-clause) BSD license
-
-Versions used in this release:
-OpenSSL      1.0.1b
-Berkeley DB  4.8.30.NC
-Boost        1.47.0
-miniupnpc    1.6
-
-
-OpenSSL
--------
-MSYS shell:
-un-tar sources with MSYS 'tar xfz' to avoid issue with symlinks (OpenSSL ticket 2377)
-change 'MAKE' env. variable from 'C:\MinGW32\bin\mingw32-make.exe' to '/c/MinGW32/bin/mingw32-make.exe'
-
-cd /c/openssl-1.0.1b-mgw
-./config
-make
-
-Berkeley DB
------------
-MSYS shell:
-cd /c/db-4.8.30.NC-mgw/build_unix
-sh ../dist/configure --enable-mingw --enable-cxx
-make
-
-Boost
------
-DOS prompt:
-downloaded boost jam 3.1.18
-cd \boost-1.47.0-mgw
-bjam toolset=gcc --build-type=complete stage
-
-MiniUPnPc
----------
-UPnP support is optional, make with USE_UPNP= to disable it.
-
-MSYS shell:
-cd /c/miniupnpc-1.6-mgw
-make -f Makefile.mingw
-mkdir miniupnpc
-cp *.h miniupnpc/
-
-Peepcoin
--------
-DOS prompt:
-cd \peepcoin\src
-mingw32-make -f makefile.mingw
-strip peepcoind.exe

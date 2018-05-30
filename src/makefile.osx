@@ -14,11 +14,13 @@ INCLUDEPATHS= \
  -I"$(CURDIR)"/obj \
  -I"$(DEPSDIR)/include" \
  -I"$(DEPSDIR)/berkeley-db@4/include" \
- -I"$(DEPSDIR)/openssl/include"
+ -I"$(DEPSDIR)/openssl/include" \
+ -I"$(DEPSDIR)/boost@1.60/include"
 
 LIBPATHS= \
  -L"$(DEPSDIR)/berkeley-db@4/lib" \
- -L"$(DEPSDIR)/openssl/lib"
+ -L"$(DEPSDIR)/openssl/lib" \
+ -L"$(DEPSDIR)/boost@1.60/lib"
 
 USE_UPNP:=1
 
@@ -47,22 +49,15 @@ LIBS += \
  -lz
 endif
 
-DEFS=-DMAC_OSX -DMSG_NOSIGNAL=0 -DBOOST_SPIRIT_THREADSAFE
+DEFS=-DMAC_OSX -DMSG_NOSIGNAL=0 -DBOOST_SPIRIT_THREADSAFE -USE_LITESTAKE -USE_STAKECOMBINATION
 
 ifdef RELEASE
 # Compile for maximum compatibility and smallest size.
 # This requires that dependencies are compiled
 # the same way.
-CFLAGS = -mmacosx-version-min=10.5 -arch x86_64 -O3 -msse2
+CFLAGS = -mmacosx-version-min=10.10 -arch x86_64 -O3 -msse2
 else
 CFLAGS = -g -msse2
-endif
-
-ifdef USE_LITESTAKE
-    DEFS += -USE_LITESTAKE
-endif
-ifdef USE_STAKECOMBINATION
-    DEFS += -USE_STAKECOMBINATION
 endif
 
 # ppc doesn't work because we don't support big-endian
