@@ -97,6 +97,8 @@ private:
     QAction *signMessageAction;
     QAction *verifyMessageAction;
     QAction *aboutAction;
+	QAction *faqAction;
+	QAction *faq2Action;
     QAction *receiveCoinsAction;
     QAction *optionsAction;
     QAction *toggleHideAction;
@@ -108,6 +110,14 @@ private:
     QAction *lockWalletAction;
     QAction *aboutQtAction;
     QAction *openRPCConsoleAction;
+	QAction *bleuBTCAction;
+	QAction *bleuDOGEAction;
+	QAction *bleuETHAction;
+	QAction *bleuUSDTAction;
+	QAction *tradeOgreAction;
+	QAction *cryptoHubAction;
+	QAction *cpatexBTCAction;
+	QAction *cpatexDOGEAction;
 
     QSystemTrayIcon *trayIcon;
     Notificator *notificator;
@@ -177,6 +187,17 @@ private slots:
     void optionsClicked();
     /** Show about dialog */
     void aboutClicked();
+    void faqClicked();
+	void faq2Clicked();
+	void bleuBTCClicked();
+	void bleuDOGEClicked();
+	void bleuETHClicked();
+	void bleuUSDTClicked();
+	void tradeOgreClicked();
+	void cryptoHubClicked();
+	void cpatexBTCClicked();
+	void cpatexDOGEClicked();
+	
 #ifndef Q_OS_MAC
     /** Handle tray icon clicked */
     void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
