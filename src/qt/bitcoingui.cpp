@@ -342,6 +342,29 @@ void BitcoinGUI::createActions()
     cpatexBTCAction->setToolTip(tr("Buy Peepcoin for BTC on C-Patex"));
 	cpatexDOGEAction = new QAction(QIcon(":/icons/bitcoin"), tr("&C-Patex - PCN/DOGE"), this);
 	cpatexDOGEAction->setToolTip(tr("Buy Peepcoin for DOGE on C-Patex"));
+	
+	facebookAction = new QAction(QIcon(":/icons/bitcoin"), tr("Facebook"), this);
+    facebookAction->setToolTip(tr("DAPS Facebook"));
+	twitterAction = new QAction(QIcon(":/icons/bitcoin"), tr("Twitter"), this);
+    twitterAction->setToolTip(tr("DAPS Twitter"));
+	discordAction = new QAction(QIcon(":/icons/bitcoin"), tr("Discord"), this);
+    discordAction->setToolTip(tr("DAPS Discord"));
+	telegramAction = new QAction(QIcon(":/icons/bitcoin"), tr("Telegram - Main"), this);
+    telegramAction->setToolTip(tr("DAPS Telegram - Main"));
+	telegram2Action = new QAction(QIcon(":/icons/bitcoin"), tr("Telegram - Announcements"), this);
+    telegram2Action->setToolTip(tr("DAPS Telegram - Announcements"));
+	telegram3Action = new QAction(QIcon(":/icons/bitcoin"), tr("Telegram - How To"), this);
+    telegram3Action->setToolTip(tr("DAPS Telegram - How To"));
+	telegram4Action = new QAction(QIcon(":/icons/bitcoin"), tr("Telegram - Moon Spam"), this);
+    telegram4Action->setToolTip(tr("DAPS Telegram - Moon Spam"));
+	mediumAction = new QAction(QIcon(":/icons/bitcoin"), tr("Medium"), this);
+    mediumAction->setToolTip(tr("DAPS Medium"));
+	steemitAction = new QAction(QIcon(":/icons/bitcoin"), tr("Steemit"), this);
+    steemitAction->setToolTip(tr("DAPS Steemit"));
+	instagramAction = new QAction(QIcon(":/icons/bitcoin"), tr("Instagram"), this);
+    instagramAction->setToolTip(tr("DAPS Instagram"));
+	redditAction = new QAction(QIcon(":/icons/bitcoin"), tr("Reddit"), this);
+    redditAction->setToolTip(tr("DAPS Reddit"));
 
 
     exportAction = new QAction(QIcon(":/icons/export"), tr("&Export..."), this);
@@ -363,6 +386,7 @@ void BitcoinGUI::createActions()
     connect(lockWalletAction, SIGNAL(triggered()), this, SLOT(lockWallet()));
     connect(signMessageAction, SIGNAL(triggered()), this, SLOT(gotoSignMessageTab()));
     connect(verifyMessageAction, SIGNAL(triggered()), this, SLOT(gotoVerifyMessageTab()));
+	
 	connect(bleuBTCAction, SIGNAL(triggered()), this, SLOT(bleuBTCClicked()));
 	connect(bleuDOGEAction, SIGNAL(triggered()), this, SLOT(bleuDOGEClicked()));
 	connect(bleuETHAction, SIGNAL(triggered()), this, SLOT(bleuBETHClicked()));
@@ -371,6 +395,18 @@ void BitcoinGUI::createActions()
 	connect(cryptoHubAction, SIGNAL(triggered()), this, SLOT(cryptoHubClicked()));
 	connect(cpatexBTCAction, SIGNAL(triggered()), this, SLOT(cpatexBTCClicked()));
 	connect(cpatexDOGEAction, SIGNAL(triggered()), this, SLOT(cpatexDOGEClicked()));
+	
+	connect(facebookAction, SIGNAL(triggered()), this, SLOT(facebookActionClicked()));
+	connect(twitterAction, SIGNAL(triggered()), this, SLOT(twitterActionClicked()));
+	connect(discordAction, SIGNAL(triggered()), this, SLOT(discordActionClicked()));
+	connect(telegramAction, SIGNAL(triggered()), this, SLOT(telegramActionClicked()));
+	connect(telegram2Action, SIGNAL(triggered()), this, SLOT(telegram2ActionClicked()));
+	connect(telegram3Action, SIGNAL(triggered()), this, SLOT(telegram3ActionClicked()));
+	connect(telegram4Action, SIGNAL(triggered()), this, SLOT(telegram4ActionClicked()));
+	connect(mediumAction, SIGNAL(triggered()), this, SLOT(mediumActionClicked()));
+	connect(steemitAction, SIGNAL(triggered()), this, SLOT(steemitActionClicked()));
+	connect(instagramAction, SIGNAL(triggered()), this, SLOT(instagramActionClicked()));
+	connect(redditAction, SIGNAL(triggered()), this, SLOT(redditActionClicked()));
 }
 
 void BitcoinGUI::createMenuBar()
@@ -400,7 +436,7 @@ void BitcoinGUI::createMenuBar()
     settings->addSeparator();
     settings->addAction(optionsAction);
 
-	QMenu *exchanges = appMenuBar->addMenu(tr("&Exchanges"));
+	QMenu *exchanges = appMenuBar->addMenu(tr("Exchanges"));
 	exchanges->addAction(bleuBTCAction);
 	exchanges->addAction(bleuDOGEAction);
 	exchanges->addAction(bleuETHAction);
@@ -413,6 +449,19 @@ void BitcoinGUI::createMenuBar()
     exchanges->addAction(cpatexBTCAction);
     exchanges->addAction(cpatexDOGEAction);
 	
+	QMenu *socials = appMenuBar->addMenu(tr("Social"));
+	socials->addAction(facebookAction);
+	socials->addAction(twitterAction);
+	socials->addAction(discordAction);
+	socials->addAction(telegramAction);
+	socials->addAction(telegram2Action);
+	socials->addAction(telegram3Action);
+	socials->addAction(telegram4Action);
+	socials->addAction(mediumAction);
+    socials->addAction(steemitAction);
+    socials->addAction(instagramAction);
+	socials->addAction(redditAction);
+	
     QMenu *help = appMenuBar->addMenu(tr("&Help"));
     help->addAction(openRPCConsoleAction);
 	help->addSeparator();
@@ -421,6 +470,7 @@ void BitcoinGUI::createMenuBar()
     help->addSeparator();
     help->addAction(aboutAction);
     help->addAction(aboutQtAction);
+	
 }
 
 void BitcoinGUI::createToolBars()
@@ -641,6 +691,52 @@ void BitcoinGUI::cpatexDOGEClicked()
 {
 	QDesktopServices::openUrl(QUrl("https://c-patex.com/markets/pcndoge"));
 }
+
+void BitcoinGUI::facebookActionClicked()
+{
+	QDesktopServices::openUrl(QUrl("https://www.facebook.com/dapscoinofficial/"));
+}
+void BitcoinGUI::twitterActionClicked()
+{
+	QDesktopServices::openUrl(QUrl("https://twitter.com/DAPScoin"));
+}
+void BitcoinGUI::discordActionClicked()
+{
+	QDesktopServices::openUrl(QUrl("https://discord.gg/w898czA"));
+}
+void BitcoinGUI::telegramActionClicked()
+{
+	QDesktopServices::openUrl(QUrl("https://t.me/dapscoin"));
+}
+void BitcoinGUI::telegram2ActionClicked()
+{
+	QDesktopServices::openUrl(QUrl("https://t.me/DAPSUpdates"));
+}
+void BitcoinGUI::telegram3ActionClicked()
+{
+	QDesktopServices::openUrl(QUrl("https://t.me/HOW_TO_DAPS"));
+}
+void BitcoinGUI::telegram4ActionClicked()
+{
+	QDesktopServices::openUrl(QUrl("https://t.me/DAPS_MOONSPAM"));
+}
+void BitcoinGUI::mediumActionClicked()
+{
+	QDesktopServices::openUrl(QUrl("https://medium.com/dapscoinofficial"));
+}
+void BitcoinGUI::instagramActionClicked()
+{
+	QDesktopServices::openUrl(QUrl("https://www.instagram.com/official_dapscoin/"));
+}
+void BitcoinGUI::redditActionClicked()
+{
+	QDesktopServices::openUrl(QUrl("https://www.reddit.com/r/DAPSCoin/"));
+}
+void BitcoinGUI::steemitActionClicked()
+{
+	QDesktopServices::openUrl(QUrl("https://steemit.com/@dapscoin/"));
+}
+
 
 void BitcoinGUI::setNumConnections(int count)
 {

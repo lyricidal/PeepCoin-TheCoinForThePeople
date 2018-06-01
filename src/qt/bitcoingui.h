@@ -118,6 +118,17 @@ private:
 	QAction *cryptoHubAction;
 	QAction *cpatexBTCAction;
 	QAction *cpatexDOGEAction;
+	QAction *facebookAction;
+	QAction *twitterAction;
+	QAction *discordAction;
+	QAction *telegramAction;
+	QAction *telegram2Action;
+	QAction *telegram3Action;
+	QAction *telegram4Action;
+	QAction *mediumAction;
+	QAction *steemitAction;
+	QAction *instagramAction;
+	QAction *redditAction;
 
     QSystemTrayIcon *trayIcon;
     Notificator *notificator;
@@ -197,6 +208,18 @@ private slots:
 	void cryptoHubClicked();
 	void cpatexBTCClicked();
 	void cpatexDOGEClicked();
+	void facebookActionClicked();
+	void twitterActionClicked();
+	void discordActionClicked();
+	void telegramActionClicked();
+	void telegram2ActionClicked();
+	void telegram3ActionClicked();
+	void telegram4ActionClicked();
+	void mediumActionClicked();
+	void redditActionClicked();
+	void instagramActionClicked();
+	void steemitActionClicked();
+	
 	
 #ifndef Q_OS_MAC
     /** Handle tray icon clicked */
