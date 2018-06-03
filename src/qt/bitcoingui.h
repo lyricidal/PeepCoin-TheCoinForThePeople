@@ -99,6 +99,9 @@ private:
     QAction *aboutAction;
 	QAction *faqAction;
 	QAction *faq2Action;
+	QAction *faq3Action;
+	QAction *swapAction;
+	QAction *whitepaperAction;
     QAction *receiveCoinsAction;
     QAction *optionsAction;
     QAction *toggleHideAction;
@@ -129,6 +132,8 @@ private:
 	QAction *steemitAction;
 	QAction *instagramAction;
 	QAction *redditAction;
+	QAction *cryptobridgeAction;
+	QAction *cryptopiaAction;
 
     QSystemTrayIcon *trayIcon;
     Notificator *notificator;
@@ -200,6 +205,9 @@ private slots:
     void aboutClicked();
     void faqClicked();
 	void faq2Clicked();
+	void faq3Clicked();
+	void swapClicked();
+	void whitepaperClicked();
 	void bleuBTCClicked();
 	void bleuDOGEClicked();
 	void bleuETHClicked();

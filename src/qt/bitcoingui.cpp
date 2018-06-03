@@ -300,8 +300,14 @@ void BitcoinGUI::createActions()
     quitAction->setMenuRole(QAction::QuitRole);
 	faqAction = new QAction(QIcon(":/icons/bitcoin"), tr("&Wallet FAQ"), this);
     faqAction->setToolTip(tr("Peepcoin Wallet FAQ"));
-	faq2Action = new QAction(QIcon(":/icons/bitcoin"), tr("&Staking FAQ"), this);
+	faq2Action = new QAction(QIcon(":/icons/staking_on"), tr("&Staking FAQ"), this);
     faq2Action->setToolTip(tr("Peepcoin Staking FAQ"));
+	faq3Action = new QAction(QIcon(":/icons/bitcoin"), tr("&General FAQ"), this);
+    faq3Action->setToolTip(tr("Peepcoin General FAQ"));
+	whitepaperAction = new QAction(QIcon(":/icons/bitcoin"), tr("&DAPS Whitepaper"), this);
+    whitepaperAction->setToolTip(tr("DAPS Whitepaper"));
+	swapAction = new QAction(QIcon(":/icons/bitcoin"), tr("&Swap Info"), this);
+    swapAction->setToolTip(tr("Swap Info"));
     aboutAction = new QAction(QIcon(":/icons/bitcoin"), tr("&About Peepcoin"), this);
     aboutAction->setToolTip(tr("Show information about Peepcoin"));
     aboutAction->setMenuRole(QAction::AboutRole);
@@ -342,6 +348,10 @@ void BitcoinGUI::createActions()
     cpatexBTCAction->setToolTip(tr("Buy Peepcoin for BTC on C-Patex"));
 	cpatexDOGEAction = new QAction(QIcon(":/icons/cpatex"), tr("&C-Patex - PCN/DOGE"), this);
 	cpatexDOGEAction->setToolTip(tr("Buy Peepcoin for DOGE on C-Patex"));
+	cryptopiaAction = new QAction(QIcon(":/icons/cryptopia"), tr("Cryptopia - Coming Soon"), this);
+	cryptopiaAction->setToolTip(tr("Buy Peepcoin for BTC on Cryptopia - Coming SOON"));
+	cryptobridgeAction = new QAction(QIcon(":/icons/cryptobridge"), tr("&CryptoBridge - Coming Soon"), this);
+	cryptobridgeAction->setToolTip(tr("Buy Peepcoin for BTC on CryptoBridge - Coming Soon"));
 	
 	facebookAction = new QAction(QIcon(":/icons/facebook"), tr("Facebook"), this);
     facebookAction->setToolTip(tr("DAPS Facebook"));
@@ -376,6 +386,9 @@ void BitcoinGUI::createActions()
     connect(aboutAction, SIGNAL(triggered()), this, SLOT(aboutClicked()));
 	connect(faqAction, SIGNAL(triggered()), this, SLOT(faqClicked()));
 	connect(faq2Action, SIGNAL(triggered()), this, SLOT(faq2Clicked()));
+	connect(faq3Action, SIGNAL(triggered()), this, SLOT(faq3Clicked()));
+	connect(swapAction, SIGNAL(triggered()), this, SLOT(swapClicked()));
+	connect(whitepaperAction, SIGNAL(triggered()), this, SLOT(whitepaperClicked()));
     connect(aboutQtAction, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
     connect(optionsAction, SIGNAL(triggered()), this, SLOT(optionsClicked()));
     connect(toggleHideAction, SIGNAL(triggered()), this, SLOT(toggleHidden()));
@@ -467,6 +480,10 @@ void BitcoinGUI::createMenuBar()
 	help->addSeparator();
 	help->addAction(faqAction);
 	help->addAction(faq2Action);
+	help->addAction(faq3Action);
+	help->addSeparator();
+	help->addAction(whitepaperAction);
+	help->addAction(swapAction);	
     help->addSeparator();
     help->addAction(aboutAction);
     help->addAction(aboutQtAction);
@@ -650,6 +667,21 @@ void BitcoinGUI::faqClicked()
 void BitcoinGUI::faq2Clicked()
 {
 	QDesktopServices::openUrl(QUrl("https://www.dapscoin.com/staking"));
+}
+
+void BitcoinGUI::faq3Clicked()
+{
+	QDesktopServices::openUrl(QUrl("https://dapscoin.com/roadmap/#faq"));
+}
+
+void BitcoinGUI::swapClicked()
+{
+	QDesktopServices::openUrl(QUrl("https://dapscoin.com/swap"));
+}
+
+void BitcoinGUI::whitepaperClicked()
+{
+	QDesktopServices::openUrl(QUrl("https://dapscoin.com/whitepaper.pdf"));
 }
 
 void BitcoinGUI::bleuBTCClicked()
