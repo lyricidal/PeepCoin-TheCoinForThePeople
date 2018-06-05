@@ -402,7 +402,7 @@ void BitcoinGUI::createActions()
 	
 	connect(bleuBTCAction, SIGNAL(triggered()), this, SLOT(bleuBTCClicked()));
 	connect(bleuDOGEAction, SIGNAL(triggered()), this, SLOT(bleuDOGEClicked()));
-	connect(bleuETHAction, SIGNAL(triggered()), this, SLOT(bleuBETHClicked()));
+    connect(bleuETHAction, SIGNAL(triggered()), this, SLOT(bleuETHClicked()));
 	connect(bleuUSDTAction, SIGNAL(triggered()), this, SLOT(bleuUSDTClicked()));
 	connect(tradeOgreAction, SIGNAL(triggered()), this, SLOT(tradeOgreClicked()));
 	connect(cryptoHubAction, SIGNAL(triggered()), this, SLOT(cryptoHubClicked()));
