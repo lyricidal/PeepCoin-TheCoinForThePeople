@@ -76,12 +76,6 @@ win32:QMAKE_LFLAGS *= -Wl,--large-address-aware -static
 win32:QMAKE_LFLAGS += -static-libgcc -static-libstdc++
 lessThan(QT_MAJOR_VERSION, 5): win32: QMAKE_LFLAGS *= -static
 
-contains(USE_STAKECOMBINATION,0){
-    message(Building without Stakecombination feature)
-}else{
-    message(Building with Stakecombination feautre)
-    DEFINES += USE_STAKECOMBINATION
-}
 # use: qmake "USE_QRCODE=1"
 # libqrencode (http://fukuchi.org/works/qrencode/index.en.html) must be installed for support
 contains(USE_QRCODE, 1) {

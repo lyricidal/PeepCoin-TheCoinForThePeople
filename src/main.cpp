@@ -1568,10 +1568,7 @@ bool CBlock::ConnectBlock(CTxDB& txdb, CBlockIndex* pindex, bool fJustCheck)
             if (!tx.IsCoinStake())
                 nFees += nTxValueIn - nTxValueOut;
             if (tx.IsCoinStake())
-#ifdef USE_STAKECOMBINATION
-                if(nTxValueIn < MIN_STAKE_AMOUNT)
-                  return(DoS(100,error("ConnectBlock() : proof-of-stake input amount too low ")));
-#endif
+
                 nStakeReward = nTxValueOut - nTxValueIn;
 
             if (!tx.ConnectInputs(txdb, mapInputs, mapQueuedChanges, posThisTx, pindex, true, false))

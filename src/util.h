@@ -139,7 +139,7 @@ inline void MilliSleep(int64_t n)
 #endif
 
 
-#ifdef USE_STAKECOMBINATION
+
 // Variables for stake combination feature based on Trezarcoin-Project
 static const int64_t MIN_STAKE_AMOUNT = 200 * COIN;
 
@@ -150,7 +150,7 @@ extern int64_t nSplitThreshold;
 
 extern uint32_t nStakeMinTime;
 extern uint32_t nStakeMinDepth;
-#endif
+
 
 static const int32_t nOneHour = 60 * 60;
 static const int32_t nOneDay = 24 * 60 * 60;

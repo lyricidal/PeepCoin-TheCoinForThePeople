@@ -387,7 +387,7 @@ bool AppInit2()
     fUseFastIndex = GetBoolArg("-fastindex", true);
     nMinerSleep = GetArg("-minersleep", 500);
 
-#ifdef USE_STAKECOMBINATION
+
     if(fTestNet) {
         nStakeMinTime = (uint)GetArg("-stakemintime", 2);
         nStakeMinDepth = (uint)GetArg("-stakemindepth", 0);
@@ -399,7 +399,7 @@ bool AppInit2()
     if(nStakeMinDepth) nStakeMinTime = 0;
     qDebug() <<"nStakeMinDepth: " << nStakeMinDepth;
     qDebug() <<"nStakeMinTime: " << nStakeMinTime;
-#endif
+
     CheckpointsMode = Checkpoints::STRICT;
     std::string strCpMode = GetArg("-cppolicy", "strict");
 
@@ -505,7 +505,7 @@ bool AppInit2()
             return InitError(strprintf(_("Invalid amount for -mininput=<amount>: '%s'"), mapArgs["-mininput"].c_str()));
     }
 
-#ifdef USE_STAKECOMBINATION
+
     /* Inputs below this limit in value don't participate in staking */
     if(mapArgs.count("-stakeminvalue")) {
         nStakeMinValue = atoi(mapArgs["-stakeminvalue"]);
@@ -533,7 +533,7 @@ bool AppInit2()
         if(nSplitThreshold < 2 * MIN_STAKE_AMOUNT)
           nSplitThreshold = 2 * MIN_STAKE_AMOUNT;
     }
-#endif
+
     // ********************************************************* Step 4: application initialization: dir lock, daemonize, pidfile, debug log
     // Sanity check
     if (!InitSanityCheck())

@@ -14,7 +14,7 @@
 #include <boost/algorithm/string/replace.hpp>
 using namespace std;
 
-#ifdef USE_STAKECOMBINATION
+
 
 /* Try to combine inputs while staking up to this limit */
 int64_t nCombineThreshold = 25000000;
@@ -25,10 +25,7 @@ int64_t nStakeMinValue = 1 * COIN;
 
 uint32_t nStakeMinTime;
 uint32_t nStakeMinDepth;
-#else
-int64_t nStakeCombineThreshold = 1000 * COIN;
 
-#endif
 unsigned int nStakeSplitAge = 1 * 24 * 60 * 60;
 //////////////////////////////////////////////////////////////////////////////
 //
@@ -1137,7 +1134,7 @@ void CWallet::AvailableCoinsForStaking(vector<COutput>& vCoins, unsigned int nSp
                 continue;
 /* Must be unspent and above the limit in value */
 
-#ifdef USE_STAKECOMBINATION
+
             /* Discard if the time (depth) requirement is unmet */
             if(nStakeMinTime) {
                 if(nDepth < nCoinbaseMaturity)
@@ -1152,12 +1149,6 @@ void CWallet::AvailableCoinsForStaking(vector<COutput>& vCoins, unsigned int nSp
                 if (!(pcoin->IsSpent(i)) && IsMine(pcoin->vout[i]) && pcoin->vout[i].nValue >= nStakeMinValue)
                     vCoins.push_back(COutput(pcoin, i, nDepth));
             }
-#else
-             for (unsigned int i = 0; i < pcoin->vout.size(); i++){
-                if (!(pcoin->IsSpent(i)) && IsMine(pcoin->vout[i]) && pcoin->vout[i].nValue >= nMinimumInputValue)
-                    vCoins.push_back(COutput(pcoin, i, nDepth));
-             }
-#endif
 
         }
     }
@@ -1726,15 +1717,11 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
                 // Split large inputs into two near halves if condition is met
                 // Difference between STAKECOMBINATION and normal is that inputs
                 // smaller than nSplitThreshold are not splitted.
-#ifdef USE_STAKECOMBINATION
+
                 if(nCredit >= nSplitThreshold && GetWeight(block.GetBlockTime(), (int64_t)txNew.nTime) < nStakeSplitAge){
                        txNew.vout.push_back(CTxOut(0, scriptPubKeyOut)); //split stake
                 }
-#else
-                if (GetWeight(block.GetBlockTime(), (int64_t)txNew.nTime) < nStakeSplitAge){
-                   txNew.vout.push_back(CTxOut(0, scriptPubKeyOut)); //split stake
-                }
-#endif
+
                 if (fDebug && GetBoolArg("-printcoinstake"))
                     printf("CreateCoinStake : added kernel type=%d\n", whichType);
                 fKernelFound = true;
@@ -1761,21 +1748,14 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
             // Stop adding more inputs if already too many inputs
             if (txNew.vin.size() >= 100)
                 break;
-#ifdef USE_STAKECOMBINATION
+			
             /* Do not add any inputs if reached or exceeded the threshold already */
             if(nCredit >= nCombineThreshold)
                 break;
             /* Do not add any large inputs capable of stake generation on their own */
             if(pcoin.first->vout[pcoin.second].nValue >= nCombineThreshold)
               continue;
-#else
-            // Stop adding more inputs if value is already pretty significant
-            if (nCredit >= nStakeCombineThreshold)
-                break;
-            // Do not add additional significant input
-            if (pcoin.first->vout[pcoin.second].nValue >= nStakeCombineThreshold)
-                continue;
-#endif
+
             // Stop adding inputs if reached reserve limit
             if (nCredit + pcoin.first->vout[pcoin.second].nValue > (nBalance - nReserveBalance))
                 break;
@@ -1799,11 +1779,11 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
         int64_t nReward = GetProofOfStakeReward(nCoinAge, nFees);
         if (nReward <= 0)
             return false;
-#ifdef USE_STAKECOMBINATION
+
         if(nCredit < MIN_STAKE_AMOUNT)
           return(error("CreateCoinStake() : stake amount below the minimum"));
 
-#endif
+
         nCredit += nReward;
     }
 
