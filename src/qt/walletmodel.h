@@ -71,10 +71,8 @@ public:
     int getNumTransactions() const;
     EncryptionStatus getEncryptionStatus() const;
 
-#ifdef USE_GUITESTING
     MintingTableModel *mintingTableModel;
     MintingTableModel *getMintingTableModel();
-#endif
 
     // Check address for validity
     bool validateAddress(const QString &address);

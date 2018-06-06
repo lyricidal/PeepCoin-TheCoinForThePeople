@@ -76,24 +76,6 @@ win32:QMAKE_LFLAGS *= -Wl,--large-address-aware -static
 win32:QMAKE_LFLAGS += -static-libgcc -static-libstdc++
 lessThan(QT_MAJOR_VERSION, 5): win32: QMAKE_LFLAGS *= -static
 
-# use: qmake "USE_LITESTAKE=1"
-# This feature implements a delay between hashing so the CPU usage is reduced.
-# Checkout HyperStake - Project for more details
-# use: qmake "USE_LITESTAKE=1"
-# This feature implements a delay between hashing so the CPU usage is reduced.
-# Checkout HyperStake - Project for more details
-contains(USE_LITESTAKE,0){
-    message(Building without Litestake feature)
-}else{
-    message(Building with Litestake feature)
-	DEFINES += USE_LITESTAKE
-}
-contains(USE_GUITESTING,0){
-    message(Building without GUI elements)
-}else{
-    message(Building with GUI elements)
-    DEFINES += USE_GUITESTING
-}
 contains(USE_STAKECOMBINATION,0){
     message(Building without Stakecombination feature)
 }else{

@@ -69,7 +69,7 @@ private:
     AddressBookPage *receiveCoinsPage;
     SendCoinsDialog *sendCoinsPage;
     SignVerifyMessageDialog *signVerifyMessageDialog;
-#ifdef USE_GUITESTING
+
     // Minting View
     QAction *mintingViewAction;
     QWidget *mintingPage;
@@ -79,8 +79,6 @@ private:
     QAction *blockexplorerAction;
     BlockBrowser *blockExplorer;
 
-
-#endif
     QLabel *labelEncryptionIcon;
     QLabel *labelStakingIcon;
     QLabel *labelConnectionsIcon;
@@ -194,11 +192,11 @@ private slots:
     void gotoSignMessageTab(QString addr = "");
     /** Show Sign/Verify Message dialog and switch to verify message tab */
     void gotoVerifyMessageTab(QString addr = "");
-#ifdef USE_GUITESTING
+    /** Switch to Staking page */
     void gotoMintingPage();
-
+    /** Switch to Block Explorer page */
     void gotoBlockexplorerPage();
-#endif
+
     /** Show configuration dialog */
     void optionsClicked();
     /** Show about dialog */

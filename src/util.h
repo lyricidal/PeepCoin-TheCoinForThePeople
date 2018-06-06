@@ -152,11 +152,9 @@ extern uint32_t nStakeMinTime;
 extern uint32_t nStakeMinDepth;
 #endif
 
-#ifdef USE_GUITESTING
 static const int32_t nOneHour = 60 * 60;
 static const int32_t nOneDay = 24 * 60 * 60;
 static const int64_t nOneWeek = 7 * 24 * 60 * 60;
-#endif
 
 extern std::map<std::string, std::string> mapArgs;
 extern std::map<std::string, std::vector<std::string> > mapMultiArgs;

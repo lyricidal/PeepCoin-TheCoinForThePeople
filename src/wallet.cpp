@@ -399,9 +399,7 @@ void CWallet::WalletUpdateSpent(const CTransaction &tx, bool fBlock)
                     wtx.MarkSpent(txin.prevout.n);
                     wtx.WriteToDisk();
                     NotifyTransactionChanged(this, txin.prevout.hash, CT_UPDATED);
-#ifdef USE_GUITESTING
                     vMintingWalletUpdated.push_back(txin.prevout.hash);
-#endif
                 }
             }
         }
@@ -419,9 +417,7 @@ void CWallet::WalletUpdateSpent(const CTransaction &tx, bool fBlock)
                     wtx.MarkUnspent(&txout - &tx.vout[0]);
                     wtx.WriteToDisk();
                     NotifyTransactionChanged(this, hash, CT_UPDATED);
-#ifdef USE_GUITESTING
                     vMintingWalletUpdated.push_back(hash);
-#endif
                 }
             }
         }
@@ -554,9 +550,8 @@ bool CWallet::AddToWallet(const CWalletTx& wtxIn)
 
         // Notify UI of new or updated transaction
         NotifyTransactionChanged(this, hash, fInsertedNew ? CT_NEW : CT_UPDATED);
-#ifdef USE_GUITESTING
+
         vMintingWalletUpdated.push_back(hash);
-#endif
         // notify an external script when a wallet transaction comes in or is updated
         std::string strCmd = GetArg("-walletnotify", "");
 
@@ -1622,7 +1617,6 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
     int64_t nValueIn = 0;
 
 
-#ifdef USE_LITESTAKE
     // Initialize as static and don't update the set on every run of CreateCoinStake() in order to lighten resource use
     static std::set<pair<const CWalletTx*,unsigned int> > setCoins;
     static int64_t nLastStakeSetUpdate = 0;
@@ -1634,15 +1628,6 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
             return false;
         nLastStakeSetUpdate = GetTime();
     }
-
-#else
-    std::set<pair<const CWalletTx*,unsigned int> > setCoins;
-    // Select coins with suitable depth
-    if (!SelectCoinsForStaking(nBalance - nReserveBalance, txNew.nTime, setCoins, nValueIn))
-        return false;
-#endif
-
-
 
     if (setCoins.empty())
         return false;
@@ -1877,9 +1862,7 @@ bool CWallet::CommitTransaction(CWalletTx& wtxNew, CReserveKey& reservekey)
                 coin.MarkSpent(txin.prevout.n);
                 coin.WriteToDisk();
                 NotifyTransactionChanged(this, coin.GetHash(), CT_UPDATED);
-#ifdef USE_GUITESTING
                 vMintingWalletUpdated.push_back(coin.GetHash());
-#endif
             }
 
             if (fFileBacked)
@@ -2494,9 +2477,7 @@ void CWallet::UpdatedTransaction(const uint256 &hashTx)
         map<uint256, CWalletTx>::const_iterator mi = mapWallet.find(hashTx);
         if (mi != mapWallet.end())
             NotifyTransactionChanged(this, hashTx, CT_UPDATED);
-#ifdef USE_GUITESTING
                 vMintingWalletUpdated.push_back(hashTx);
-#endif
     }
 }
 

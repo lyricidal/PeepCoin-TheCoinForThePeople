@@ -559,7 +559,6 @@ void StakeMiner(CWallet *pwallet)
                 continue;
             }
         }
-#ifdef USE_LITESTAKE
         if(mapHashedBlocks.count(nBestHeight)) //search our map of hashed blocks, see if bestblock has been hashed yet
         {
             if(GetTime() - mapHashedBlocks[nBestHeight] <  (unsigned int)pwallet->nHashInterval) // wait a 'hash interval' until trying to hash again
@@ -574,7 +573,6 @@ void StakeMiner(CWallet *pwallet)
                 continue;
             }
         }
-#endif
 
         //
         // Create new block

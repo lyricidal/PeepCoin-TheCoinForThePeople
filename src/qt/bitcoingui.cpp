@@ -26,10 +26,8 @@
 #include "guiutil.h"
 #include "rpcconsole.h"
 #include "wallet.h"
-#ifdef USE_GUITESTING
 #include "mintingview.h"
 #include "blockbrowser.h"
-#endif
 #ifdef Q_OS_MAC
 #include "macdockiconhandler.h"
 #endif
@@ -134,7 +132,7 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     centralWidget->addWidget(sendCoinsPage);
     setCentralWidget(centralWidget);
 
-#ifdef USE_GUITESTING
+
     mintingPage = new QWidget(this);
     QVBoxLayout *vboxMinting = new QVBoxLayout();
     mintingView = new MintingView(this);
@@ -144,7 +142,7 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
 
     blockExplorer = new BlockBrowser(this);
     centralWidget->addWidget(blockExplorer);
-#endif
+
     // Create status bar
     statusBar();
 
@@ -260,7 +258,7 @@ void BitcoinGUI::createActions()
     addressBookAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_5));
     tabGroup->addAction(addressBookAction);
 
-#ifdef USE_GUITESTING
+
     // Minting View
     mintingViewAction = new QAction(QIcon(":/icons/stake"), tr("&Staking"), this);
     mintingViewAction->setToolTip(tr("Shows staking details"));
@@ -281,7 +279,7 @@ void BitcoinGUI::createActions()
 
     connect(blockexplorerAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
     connect(blockexplorerAction, SIGNAL(triggered()), this, SLOT(gotoBlockexplorerPage()));
-#endif
+
 
     connect(overviewAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
     connect(overviewAction, SIGNAL(triggered()), this, SLOT(gotoOverviewPage()));
@@ -506,10 +504,9 @@ void BitcoinGUI::createToolBars()
     toolbar->addAction(receiveCoinsAction);
     toolbar->addAction(historyAction);
     toolbar->addAction(addressBookAction);
-#ifdef USE_GUITESTING
     toolbar->addAction(mintingViewAction);
     toolbar->addAction(blockexplorerAction);
-#endif
+
     QToolBar *toolbar2 = addToolBar(tr("Actions toolbar"));
     toolbar2->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 #ifdef Q_OS_LINUX
@@ -573,9 +570,7 @@ void BitcoinGUI::setWalletModel(WalletModel *walletModel)
 
         // Put transaction list in tabs
         transactionView->setModel(walletModel);
-#ifdef USE_GUITESTING
         mintingView->setModel(walletModel);
-#endif
         overviewPage->setModel(walletModel);
         addressBookPage->setModel(walletModel->getAddressTableModel());
         receiveCoinsPage->setModel(walletModel->getAddressTableModel());
@@ -1031,7 +1026,6 @@ void BitcoinGUI::gotoSendCoinsPage()
     disconnect(exportAction, SIGNAL(triggered()), 0, 0);
 }
 
-#ifdef USE_GUITESTING
 void BitcoinGUI::gotoMintingPage()
 {
     mintingViewAction->setChecked(true);
@@ -1051,7 +1045,6 @@ void BitcoinGUI::gotoBlockexplorerPage()
 
 }
 
-#endif
 
 void BitcoinGUI::gotoSignMessageTab(QString addr)
 {

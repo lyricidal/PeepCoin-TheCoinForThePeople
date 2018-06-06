@@ -7,13 +7,10 @@
 #include "wallet.h"
 #include "walletdb.h" // for BackupWallet
 #include "base58.h"
+#include "mintingtablemodel.h"
 
 #include <QSet>
 #include <QTimer>
-
-#ifdef USE_GUITESTING
-#include "mintingtablemodel.h"
-#endif
 
 WalletModel::WalletModel(CWallet *wallet, OptionsModel *optionsModel, QObject *parent) :
     QObject(parent), wallet(wallet), optionsModel(optionsModel), addressTableModel(0),
@@ -25,9 +22,8 @@ WalletModel::WalletModel(CWallet *wallet, OptionsModel *optionsModel, QObject *p
 {
     addressTableModel = new AddressTableModel(wallet, this);
     transactionTableModel = new TransactionTableModel(wallet, this);
-#ifdef USE_GUITESTING
     mintingTableModel = new MintingTableModel(wallet, this);
-#endif
+
     // This timer will be fired repeatedly to update the balance
     pollTimer = new QTimer(this);
     connect(pollTimer, SIGNAL(timeout()), this, SLOT(pollBalanceChanged()));
@@ -263,12 +259,12 @@ AddressTableModel *WalletModel::getAddressTableModel()
 {
     return addressTableModel;
 }
-#ifdef USE_GUITESTING
+
 MintingTableModel *WalletModel::getMintingTableModel()
 {
     return mintingTableModel;
 }
-#endif
+
 TransactionTableModel *WalletModel::getTransactionTableModel()
 {
     return transactionTableModel;

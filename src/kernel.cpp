@@ -323,10 +323,8 @@ bool CheckStakeKernelHash(unsigned int nBits, const CBlock& blockFrom, unsigned 
             nTimeBlockFrom, nTxPrevOffset, txPrev.nTime, prevout.n, nTimeTx,
             hashProofOfStake.ToString().c_str());
     }
-#ifdef USE_LITESTAKE
     mapHashedBlocks.clear();
     mapHashedBlocks[nBestHeight] = GetTime();
-#endif
     return true;
 
 }
