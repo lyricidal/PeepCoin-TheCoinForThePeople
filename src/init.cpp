@@ -17,9 +17,6 @@
 #include <boost/interprocess/sync/file_lock.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 #include <openssl/crypto.h>
-#ifdef QT_GUI
-#include <QDebug>
-#endif
 #ifndef WIN32
 #include <signal.h>
 #endif
@@ -389,16 +386,16 @@ bool AppInit2()
 
 
     if(fTestNet) {
-        nStakeMinTime = (uint)GetArg("-stakemintime", 2);
-        nStakeMinDepth = (uint)GetArg("-stakemindepth", 0);
+        nStakeMinTime = (uint64_t)GetArg("-stakemintime", 2);
+        nStakeMinDepth = (uint64_t)GetArg("-stakemindepth", 0);
     } else {
-        nStakeMinTime = (uint)GetArg("-stakemintime", 2);
-        nStakeMinDepth = (uint)GetArg("-stakemindepth", 0);
+        nStakeMinTime = (uint64_t)GetArg("-stakemintime", 2);
+        nStakeMinDepth = (uint64_t)GetArg("-stakemindepth", 0);
     }
     /* Reset time if depth is specified */
     if(nStakeMinDepth) nStakeMinTime = 0;
-    qDebug() <<"nStakeMinDepth: " << nStakeMinDepth;
-    qDebug() <<"nStakeMinTime: " << nStakeMinTime;
+    //qDebug() <<"nStakeMinDepth: " << nStakeMinDepth;
+    //qDebug() <<"nStakeMinTime: " << nStakeMinTime;
 
     CheckpointsMode = Checkpoints::STRICT;
     std::string strCpMode = GetArg("-cppolicy", "strict");
@@ -511,7 +508,7 @@ bool AppInit2()
         nStakeMinValue = atoi(mapArgs["-stakeminvalue"]);
         if(nStakeMinValue < 0 )
           return(InitError("Invalid amount for -stakeminvalue=<amount>'"));
-        qDebug() << "nStakeMinValue: " << nStakeMinValue;
+        //qDebug() << "nStakeMinValue: " << nStakeMinValue;
     }
 
     /* Try to combine inputs while staking up to this limit */
@@ -519,7 +516,7 @@ bool AppInit2()
         nCombineThreshold = atoi(mapArgs["-stakecombine"]);
         if(nCombineThreshold < 0 )
           return(InitError("Invalid amount for -stakecombine=<amount>'"));
-         qDebug() << "nCombineThreshold:" << nCombineThreshold;
+         //qDebug() << "nCombineThreshold:" << nCombineThreshold;
         if(nCombineThreshold < MIN_STAKE_AMOUNT)
           nCombineThreshold = MIN_STAKE_AMOUNT;
     }
@@ -529,7 +526,7 @@ bool AppInit2()
         nSplitThreshold = atoi(mapArgs["-stakesplit"]);
         if(nSplitThreshold < 0 )
           return(InitError("Invalid amount for -stakesplit=<amount>'"));
-        qDebug() << "nSplitThreshold:" << nSplitThreshold;
+        //qDebug() << "nSplitThreshold:" << nSplitThreshold;
         if(nSplitThreshold < 2 * MIN_STAKE_AMOUNT)
           nSplitThreshold = 2 * MIN_STAKE_AMOUNT;
     }
