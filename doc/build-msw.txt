@@ -235,12 +235,20 @@ mingw32-make
 
 ```
  
-### 4. Compile
+### 4.a. Compile Peepcoin-QT
 
-Go to the Peepcoin github folder, use the command promt ( use set PATH=%PATH%;C:\Qt\5.3.2\bin if its a new prompt):
+Go to the Peepcoin github folder, use the command prompt (use set PATH=%PATH%;C:\Qt\5.7.1\bin if its a new prompt):
 ```
 
-qmake USE_QRCODE=1
+qmake RELEASE=1 USE_QRCODE=1
 
 make -f Makefile.Release
+```
+
+### 4.b. Compile PeepcoinD
+
+Go to the Peepcoin/src folder, use the command prompt (use set PATH=%PATH%;C:\Qt\5.7.1\bin if its a new prompt):
+```
+
+make -f makefile.mingw RELEASE=1 STATIC=1
 ```

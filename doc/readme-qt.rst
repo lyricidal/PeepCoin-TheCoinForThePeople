@@ -4,7 +4,7 @@ Peepcoin-qt: Qt5 GUI for Peepcoin
 Build instructions
 ===================
 
-Debian
+Debian (Not up to date)
 -------
 
 First, make sure that the required packages for Qt5 development of your
@@ -85,7 +85,7 @@ https://github.com/DAPSCoin/PeepCoin-TheCoinForThePeople.git
 cd PeepCoin-TheCoinForThePeople
 
 Build Peepcoin-Qt
-qmake RELEASE=1 USE_QRCODE=1 USE_LITESTAKE=1 USE_STAKECOMBINATION=1 USE_GUITESTING=1
+qmake RELEASE=1 USE_QRCODE=1
 make
 
 -Install EasyInstll and AppScript

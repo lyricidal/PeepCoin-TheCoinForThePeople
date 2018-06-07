@@ -12,15 +12,15 @@ UNIX BUILD NOTES
 ================
 Dependencies
 ------------
+sudo add-apt-repository ppa:bitcoin/bitcoin -y
+[Press Enter]
 sudo apt update
-sudo apt upgrade -y
 
 sudo apt install git build-essential libdb4.8-dev libdb4.8++-dev -y
 sudo apt install libssl-dev libboost-all-dev libqrencode-dev libminiupnpc-dev -y
 sudo apt install qt5-default qt5-qmake qtbase5-dev-tools qttools5-dev-tools -y
-sudo add-apt-repository ppa:bitcoin/bitcoin
-[Press Enter]
-sudo apt update
+
+sudo apt upgrade -y
 
 wget http://download.sourceforge.net/libpng/libpng-1.6.16.tar.gz
 tar xvzf libpng-1.6.16.tar.gz
@@ -61,7 +61,7 @@ strip peepcoind
 - Build Qt GUI Wallet (peepcoin-qt)
 cd ..
 (if using the same terminal, brings you back to Peepcoin root folder)
-qmake RELEASE=1 USE_QRCODE=1 USE_LITESTAKE=1 USE_STAKECOMBINATION=1 USE_GUITESTING=1
+qmake RELEASE=1 USE_QRCODE=1
 make
 strip peepcoin-qt
 
@@ -74,6 +74,16 @@ cd ~/PeepCoin-TheCoinForThePeople/
 Launch your peepcoin-qt through the GUI or in terminal:
 cd ~/PeepCoin-TheCoinForThePeople/src/
 ./peepcoind
+
+* Troubleshooting:
+------------------
+QT Wallet won't launch? 
+Try this from terminal in your /PeepCoin-TheCoinForThePeople/ folder and re-launch:
+chmod +x peepcoin-qt
+
+Peepcoind Daemon (peepcoind) won't launch? 
+Try this from terminal in your /PeepCoin-TheCoinForThePeople/src/ folder and re-launch:
+chmod +x peepcoind 
 
 
 Dependencies Info
@@ -203,10 +213,4 @@ exploit even if a vulnerability is found, you can take the following measures:
 
     The STK RW- means that the stack is readable and writeable but not executable.
 	
-* Troubleshooting:
-QT Wallet won't launch? Try this and relaunch:
-chmod +x peepcoin-qt
-
-Peepcoind Daemon (peepcoind) won't launch? Try this and relaunch:
-chmod +x peepcoind 
 
