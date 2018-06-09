@@ -36,5 +36,7 @@ static const int MAX_URI_LENGTH = 255;
 #define COLOR_MINT_MATURE QColor(60, 179, 113)
 #define COLOR_MINT_OLD QColor("red")
 
+/* Number of frames in spinner animation */
+#define SPINNER_FRAMES 35
 
 #endif // GUICONSTANTS_H

@@ -138,7 +138,7 @@ private:
     TransactionView *transactionView;
     RPCConsole *rpcConsole;
 
-    QMovie *syncIconMovie;
+	int spinnerFrame;
 
     uint64_t nWeight;
 
