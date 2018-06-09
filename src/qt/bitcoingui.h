@@ -119,6 +119,7 @@ private:
 	QAction *cryptoHubAction;
 	QAction *cpatexBTCAction;
 	QAction *cpatexDOGEAction;
+	QAction *otherExchangesAction;
 	QAction *facebookAction;
 	QAction *twitterAction;
 	QAction *discordAction;
@@ -214,6 +215,7 @@ private slots:
 	void cryptoHubClicked();
 	void cpatexBTCClicked();
 	void cpatexDOGEClicked();
+	void otherExchangesClicked();
 	void facebookActionClicked();
 	void twitterActionClicked();
 	void discordActionClicked();

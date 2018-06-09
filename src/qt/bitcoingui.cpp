@@ -348,6 +348,8 @@ void BitcoinGUI::createActions()
 	cryptopiaAction->setToolTip(tr("Buy Peepcoin for BTC on Cryptopia - Coming SOON"));
 	cryptobridgeAction = new QAction(QIcon(":/icons/cryptobridge"), tr("&CryptoBridge - Coming Soon"), this);
 	cryptobridgeAction->setToolTip(tr("Buy Peepcoin for BTC on CryptoBridge - Coming Soon"));
+	otherExchangesAction = new QAction(QIcon(":/icons/bitcoin"), tr("&Other Exchanges"), this);
+	otherExchangesAction->setToolTip(tr("Other Exchanges currently listing PeepCoin"));
 	
 	facebookAction = new QAction(QIcon(":/icons/facebook"), tr("Facebook"), this);
     facebookAction->setToolTip(tr("DAPS Facebook"));
@@ -404,6 +406,7 @@ void BitcoinGUI::createActions()
 	connect(cryptoHubAction, SIGNAL(triggered()), this, SLOT(cryptoHubClicked()));
 	connect(cpatexBTCAction, SIGNAL(triggered()), this, SLOT(cpatexBTCClicked()));
 	connect(cpatexDOGEAction, SIGNAL(triggered()), this, SLOT(cpatexDOGEClicked()));
+	connect(otherExchangesAction, SIGNAL(triggered()), this, SLOT(otherExchangesClicked()));
 	
 	connect(facebookAction, SIGNAL(triggered()), this, SLOT(facebookActionClicked()));
 	connect(twitterAction, SIGNAL(triggered()), this, SLOT(twitterActionClicked()));
@@ -457,6 +460,8 @@ void BitcoinGUI::createMenuBar()
     exchanges->addSeparator();
     exchanges->addAction(cpatexBTCAction);
     exchanges->addAction(cpatexDOGEAction);
+	exchanges->addSeparator();
+	exchanges->addAction(otherExchangesAction);
 	
 	QMenu *socials = appMenuBar->addMenu(tr("Social"));
 	socials->addAction(facebookAction);
@@ -715,6 +720,11 @@ void BitcoinGUI::cpatexBTCClicked()
 void BitcoinGUI::cpatexDOGEClicked()
 {
 	QDesktopServices::openUrl(QUrl("https://c-patex.com/markets/pcndoge"));
+}
+
+void BitcoinGUI::otherExchangesClicked()
+{
+	QDesktopServices::openUrl(QUrl("https://www.dapscoin.com/markets"));
 }
 
 void BitcoinGUI::facebookActionClicked()
