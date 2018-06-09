@@ -34,7 +34,7 @@ AskPassphraseDialog::AskPassphraseDialog(Mode mode, QWidget *parent) :
         case Encrypt: // Ask passphrase x2
             ui->passLabel1->hide();
             ui->passEdit1->hide();
-            ui->warningLabel->setText(tr("Enter the new passphrase to the wallet.<br/>Please use a passphrase of <b>ten or more random characters</b>, or <b>eight or more words</b>."));
+            ui->warningLabel->setText(tr("<b><center>PLEASE NOTE: NO ONE CAN RECOVER YOUR PASSWORD. PLEASE MAKE SURE TO REMEMBER/KEEP IT SAFE.</center></b><center>Also recommend to <b>dumpprivkey wallet.txt</b> in <b>Debug Console</b> to save your Private Keys to a text file as well.</center><br/>Enter the new passphrase to the wallet.<br/>Please use a passphrase of <b>ten or more random characters</b>, or <b>eight or more words</b>."));
             setWindowTitle(tr("Encrypt wallet"));
             break;
         case UnlockStaking:
