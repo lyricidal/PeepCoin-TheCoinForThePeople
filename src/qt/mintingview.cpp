@@ -65,7 +65,7 @@ MintingView::MintingView(QWidget *parent) :
     label1->setFont(font);
     label1->setFixedWidth(250);
 
-    QLabel *mintingLabel = new QLabel(tr("Check the arrow icon below for more staking information."));
+    QLabel *mintingLabel = new QLabel(tr("<b>Check the table below for more staking information. [EXPERIMENTAL]</b>"));
 
     QLabel *mintingLabel2 = new QLabel(tr(" [Display staking probability within]: "));
     mintingCombo = new QComboBox();
