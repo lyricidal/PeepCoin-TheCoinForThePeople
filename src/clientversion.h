@@ -10,7 +10,11 @@
 #define CLIENT_VERSION_MINOR       0
 #define CLIENT_VERSION_REVISION    3
 #define CLIENT_VERSION_BUILD       0
-#define BUILD_DATE "Sat Jun 2 23:00:42 2018"
+
+//Windows has trouble inserting a Build Date, let's set one
+#ifdef WIN32
+#define BUILD_DATE "Tue Jun 12 17:00:00 2018"
+#endif
 
 // Converts the parameter X to a string after macro replacement on X has been performed.
 // Don't merge these into one macro!
