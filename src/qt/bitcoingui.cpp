@@ -300,6 +300,8 @@ void BitcoinGUI::createActions()
     faq2Action->setToolTip(tr("Peepcoin Staking FAQ"));
 	faq3Action = new QAction(QIcon(":/icons/bitcoin"), tr("&General FAQ"), this);
     faq3Action->setToolTip(tr("Peepcoin General FAQ"));
+	contactUsAction = new QAction(QIcon(":/icons/bitcoin"), tr("&Contact Us"), this);
+    contactUsAction->setToolTip(tr("Contact Us"));
 	whitepaperAction = new QAction(QIcon(":/icons/bitcoin"), tr("&DAPS Whitepaper"), this);
     whitepaperAction->setToolTip(tr("DAPS Whitepaper"));
 	swapAction = new QAction(QIcon(":/icons/bitcoin"), tr("&Swap Info"), this);
@@ -357,6 +359,8 @@ void BitcoinGUI::createActions()
     twitterAction->setToolTip(tr("DAPS Twitter"));
 	discordAction = new QAction(QIcon(":/icons/discord"), tr("Discord"), this);
     discordAction->setToolTip(tr("DAPS Discord"));
+	discord2Action = new QAction(QIcon(":/icons/discord"), tr("Discord - #wallet-help"), this);
+    discord2Action->setToolTip(tr("DAPS Discord - #wallet-help"));
 	telegramAction = new QAction(QIcon(":/icons/telegram"), tr("Telegram - Main"), this);
     telegramAction->setToolTip(tr("DAPS Telegram - Main"));
 	telegram2Action = new QAction(QIcon(":/icons/telegram"), tr("Telegram - Announcements"), this);
@@ -385,6 +389,7 @@ void BitcoinGUI::createActions()
 	connect(faqAction, SIGNAL(triggered()), this, SLOT(faqClicked()));
 	connect(faq2Action, SIGNAL(triggered()), this, SLOT(faq2Clicked()));
 	connect(faq3Action, SIGNAL(triggered()), this, SLOT(faq3Clicked()));
+	connect(contactUsAction, SIGNAL(triggered()), this, SLOT(contactUsActionClicked()));
 	connect(swapAction, SIGNAL(triggered()), this, SLOT(swapClicked()));
 	connect(whitepaperAction, SIGNAL(triggered()), this, SLOT(whitepaperClicked()));
     connect(aboutQtAction, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
@@ -411,6 +416,7 @@ void BitcoinGUI::createActions()
 	connect(facebookAction, SIGNAL(triggered()), this, SLOT(facebookActionClicked()));
 	connect(twitterAction, SIGNAL(triggered()), this, SLOT(twitterActionClicked()));
 	connect(discordAction, SIGNAL(triggered()), this, SLOT(discordActionClicked()));
+	connect(discord2Action, SIGNAL(triggered()), this, SLOT(discord2ActionClicked()));
 	connect(telegramAction, SIGNAL(triggered()), this, SLOT(telegramActionClicked()));
 	connect(telegram2Action, SIGNAL(triggered()), this, SLOT(telegram2ActionClicked()));
 	connect(telegram3Action, SIGNAL(triggered()), this, SLOT(telegram3ActionClicked()));
@@ -478,6 +484,10 @@ void BitcoinGUI::createMenuBar()
 	
     QMenu *help = appMenuBar->addMenu(tr("&Help"));
     help->addAction(openRPCConsoleAction);
+	help->addSeparator();
+	help->addAction(discord2Action);
+	help->addAction(telegram3Action);
+	help->addAction(contactUsAction);
 	help->addSeparator();
 	help->addAction(faqAction);
 	help->addAction(faq2Action);
@@ -672,6 +682,11 @@ void BitcoinGUI::faq3Clicked()
 	QDesktopServices::openUrl(QUrl("https://dapscoin.com/roadmap/#faq"));
 }
 
+void BitcoinGUI::contactUsActionClicked()
+{
+	QDesktopServices::openUrl(QUrl("https://dapscoin.com/contact"));
+}
+
 void BitcoinGUI::swapClicked()
 {
 	QDesktopServices::openUrl(QUrl("https://dapscoin.com/swap"));
@@ -738,6 +753,10 @@ void BitcoinGUI::twitterActionClicked()
 void BitcoinGUI::discordActionClicked()
 {
 	QDesktopServices::openUrl(QUrl("https://discord.gg/w898czA"));
+}
+void BitcoinGUI::discord2ActionClicked()
+{
+	QDesktopServices::openUrl(QUrl("https://discord.gg/8vbXJMf"));
 }
 void BitcoinGUI::telegramActionClicked()
 {

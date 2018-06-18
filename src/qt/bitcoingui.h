@@ -122,7 +122,9 @@ private:
 	QAction *otherExchangesAction;
 	QAction *facebookAction;
 	QAction *twitterAction;
+	QAction *contactUsAction;
 	QAction *discordAction;
+	QAction *discord2Action;
 	QAction *telegramAction;
 	QAction *telegram2Action;
 	QAction *telegram3Action;
@@ -219,6 +221,7 @@ private slots:
 	void facebookActionClicked();
 	void twitterActionClicked();
 	void discordActionClicked();
+	void discord2ActionClicked();
 	void telegramActionClicked();
 	void telegram2ActionClicked();
 	void telegram3ActionClicked();
@@ -227,6 +230,7 @@ private slots:
 	void redditActionClicked();
 	void instagramActionClicked();
 	void steemitActionClicked();
+	void contactUsActionClicked();
 	
 	
 #ifndef Q_OS_MAC
