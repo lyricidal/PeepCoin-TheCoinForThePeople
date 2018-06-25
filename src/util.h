@@ -146,7 +146,9 @@ static const int64_t MIN_STAKE_AMOUNT = 200 * COIN;
 // implemented in wallet.cpp
 extern int64_t nStakeMinValue;
 extern int64_t nCombineThreshold;
+#ifdef USE_STAKESPLIT
 extern int64_t nSplitThreshold;
+#endif
 
 extern uint32_t nStakeMinTime;
 extern uint32_t nStakeMinDepth;

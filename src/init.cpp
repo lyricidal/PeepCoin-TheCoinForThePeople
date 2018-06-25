@@ -520,7 +520,7 @@ bool AppInit2()
         if(nCombineThreshold < MIN_STAKE_AMOUNT)
           nCombineThreshold = MIN_STAKE_AMOUNT;
     }
-
+#ifdef USE_STAKESPLIT
     /* Don't split outputs while staking below this limit */
     if(mapArgs.count("-stakesplit")) {
         nSplitThreshold = atoi(mapArgs["-stakesplit"]);
@@ -530,6 +530,7 @@ bool AppInit2()
         if(nSplitThreshold < 2 * MIN_STAKE_AMOUNT)
           nSplitThreshold = 2 * MIN_STAKE_AMOUNT;
     }
+#endif
 
     // ********************************************************* Step 4: application initialization: dir lock, daemonize, pidfile, debug log
     // Sanity check
